@@ -180,13 +180,13 @@ const Cart = () => {
     <div className="min-h-screen bg-stone-50 pt-20">
       {/* Main Content */}
       <main className="main-content min-h-screen pb-20">
-        <div className="container py-10">
-          <div className="flex justify-between items-center mb-6">
-            <h1 className="page-title">ショッピングカート</h1>
+        <div className="container py-4 md:py-10">
+          <div className="flex justify-between items-center mb-4 md:mb-6">
+            <h1 className="page-title text-xl md:text-2xl">ショッピングカート</h1>
             {cartItems.length > 0 && (
               <button
                 onClick={clearCart}
-                className="text-sm text-red-600 hover:text-red-700"
+                className="text-xs md:text-sm text-red-600 hover:text-red-700"
               >
                 カートを空にする
               </button>
@@ -200,9 +200,9 @@ const Cart = () => {
           )}
 
           {cartItems.length === 0 ? (
-            <div className="text-center py-16">
-              <p className="text-stone-600 mb-4">カートに商品がありません</p>
-              <Link to="/" className="link-text link-text-bold">商品を見る</Link>
+            <div className="text-center py-12 md:py-16">
+              <p className="text-stone-600 mb-4 text-sm md:text-base">カートに商品がありません</p>
+              <Link to="/" className="link-text link-text-bold text-sm md:text-base">商品を見る</Link>
             </div>
           ) : (
             <div className="grid md:grid-cols-3 gap-6">
@@ -217,10 +217,10 @@ const Cart = () => {
                   const quantity = item.quantity || 1;
 
                   return (
-                    <div key={item.id} className="bg-white rounded-lg shadow-sm p-4">
-                      <div className="flex gap-4">
+                    <div key={item.id} className="bg-white rounded-lg shadow-sm p-3 md:p-4">
+                      <div className="flex gap-3 md:gap-4">
                         {/* Product Image */}
-                        <Link to={`/product/${product.id}`} className="w-24 h-24 bg-stone-200 rounded flex-shrink-0 flex items-center justify-center overflow-hidden">
+                        <Link to={`/product/${product.id}`} className="w-16 h-16 md:w-24 md:h-24 bg-stone-200 rounded flex-shrink-0 flex items-center justify-center overflow-hidden">
                           {productImage ? (
                             <img src={productImage} alt={productName} className="w-full h-full object-cover" />
                           ) : (
@@ -229,25 +229,25 @@ const Cart = () => {
                         </Link>
 
                         {/* Product Info */}
-                        <div className="flex-1">
-                          <Link to={`/product/${product.id}`} className="font-bold text-stone-800 hover:text-stone-600">
+                        <div className="flex-1 min-w-0">
+                          <Link to={`/product/${product.id}`} className="font-bold text-sm md:text-base text-stone-800 hover:text-stone-600 block truncate">
                             {productName}
                           </Link>
-                          <p className="text-stone-600 mt-1">¥{productPrice.toLocaleString()}</p>
+                          <p className="text-stone-600 text-sm md:text-base mt-1">¥{productPrice.toLocaleString()}</p>
 
                           {/* Quantity Controls */}
-                          <div className="flex items-center gap-2 mt-3">
+                          <div className="flex items-center gap-2 mt-2 md:mt-3">
                             <button
                               onClick={() => updateQuantity(item.id, quantity - 1)}
-                              className="w-8 h-8 rounded border border-stone-300 flex items-center justify-center hover:bg-stone-100"
+                              className="w-7 h-7 md:w-8 md:h-8 rounded border border-stone-300 flex items-center justify-center hover:bg-stone-100 text-sm"
                               disabled={quantity <= 1}
                             >
                               -
                             </button>
-                            <span className="w-12 text-center">{quantity}</span>
+                            <span className="w-10 md:w-12 text-center text-sm md:text-base">{quantity}</span>
                             <button
                               onClick={() => updateQuantity(item.id, quantity + 1)}
-                              className="w-8 h-8 rounded border border-stone-300 flex items-center justify-center hover:bg-stone-100"
+                              className="w-7 h-7 md:w-8 md:h-8 rounded border border-stone-300 flex items-center justify-center hover:bg-stone-100 text-sm"
                             >
                               +
                             </button>
@@ -260,11 +260,11 @@ const Cart = () => {
                             onClick={() => removeItem(item.id)}
                             className="text-red-600 hover:text-red-700"
                           >
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                             </svg>
                           </button>
-                          <p className="font-bold text-stone-800">
+                          <p className="font-bold text-sm md:text-base text-stone-800 mt-2">
                             ¥{(productPrice * quantity).toLocaleString()}
                           </p>
                         </div>
@@ -276,35 +276,35 @@ const Cart = () => {
 
               {/* Summary */}
               <div className="md:col-span-1">
-                <div className="bg-white rounded-lg shadow-sm p-6 sticky top-4">
-                  <h2 className="font-bold text-lg mb-4">注文サマリー</h2>
+                <div className="bg-white rounded-lg shadow-sm p-4 md:p-6 md:sticky md:top-4">
+                  <h2 className="font-bold text-base md:text-lg mb-4">注文サマリー</h2>
                   
                   <div className="space-y-2 mb-4">
-                    <div className="flex justify-between">
+                    <div className="flex justify-between text-sm md:text-base">
                       <span className="text-stone-600">小計</span>
                       <span>¥{getTotalPrice().toLocaleString()}</span>
                     </div>
-                    <div className="flex justify-between">
+                    <div className="flex justify-between text-sm md:text-base">
                       <span className="text-stone-600">配送料</span>
                       <span>¥0</span>
                     </div>
                   </div>
 
                   <div className="border-t pt-4 mb-6">
-                    <div className="flex justify-between font-bold text-lg">
+                    <div className="flex justify-between font-bold text-base md:text-lg">
                       <span>合計</span>
                       <span>¥{getTotalPrice().toLocaleString()}</span>
                     </div>
                   </div>
 
                   <button
-                    className="w-full bg-stone-800 hover:bg-stone-700 text-white font-bold py-3 px-4 rounded-lg transition-colors"
+                    className="w-full bg-stone-800 hover:bg-stone-700 text-white font-bold py-2.5 md:py-3 px-4 rounded-lg transition-colors text-sm md:text-base"
                     onClick={() => alert('購入機能はまだ実装されていません')}
                   >
                     購入手続きへ
                   </button>
 
-                  <Link to="/" className="block text-center link-text mt-4">
+                  <Link to="/" className="block text-center link-text mt-3 md:mt-4 text-sm md:text-base">
                     買い物を続ける
                   </Link>
                 </div>
