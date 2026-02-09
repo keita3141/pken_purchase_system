@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { cartCount } = useAuth();
 
   return (
     <>
@@ -17,8 +19,13 @@ const Header = () => {
           </button>
           <h1 className="text-lg font-bold">Mobile Order</h1>
         </div>
-        <Link to="/cart" aria-label="カート画面へ" className="text-2xl">
+        <Link to="/cart" aria-label="カート画面へ" className="text-2xl relative">
           <span className="material-icons">shopping_cart</span>
+          {cartCount > 0 && (
+            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">
+              {cartCount > 99 ? '99+' : cartCount}
+            </span>
+          )}
         </Link>
       </header>
 

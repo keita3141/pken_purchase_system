@@ -15,10 +15,51 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [liffInitialized, setLiffInitialized] = useState(false);
+  const [cartCount, setCartCount] = useState(0);
 
   useEffect(() => {
     initializeLiff();
   }, []);
+
+  // カートアイテム数を取得
+  const fetchCartCount = async () => {
+    try {
+      const token = localStorage.getItem('authToken');
+      if (!token) {
+        setCartCount(0);
+        return;
+      }
+
+      const response = await fetch('https://komapay.p-kmt.com/api/cart', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success && data.data && Array.isArray(data.data.items)) {
+          const count = data.data.items.reduce((sum, item) => sum + (item.quantity || 0), 0);
+          setCartCount(count);
+        } else if (Array.isArray(data)) {
+          const count = data.reduce((sum, item) => sum + (item.quantity || 0), 0);
+          setCartCount(count);
+        }
+      }
+    } catch (error) {
+      console.error('カート数取得エラー:', error);
+    }
+  };
+
+  useEffect(() => {
+    // ユーザーがログインしている場合、カート数を取得
+    const token = localStorage.getItem('authToken');
+    if (token) {
+      fetchCartCount();
+    }
+  }, [user]);
 
   const initializeLiff = async () => {
     try {
@@ -117,6 +158,8 @@ export const AuthProvider = ({ children }) => {
     user,
     loading,
     liffInitialized,
+    cartCount,
+    fetchCartCount,
     login,
     logout,
     liff,

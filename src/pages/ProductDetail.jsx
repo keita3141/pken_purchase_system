@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 
 const API_BASE_URL = 'https://komapay.p-kmt.com';
 
 const ProductDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { fetchCartCount } = useAuth();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -139,6 +141,9 @@ const ProductDetail = () => {
       if (!response.ok) {
         throw new Error(data.message || `カートへの追加に失敗しました (${response.status})`);
       }
+
+      // カート数を更新
+      await fetchCartCount();
 
       alert(`${product.name}をカートに追加しました！`);
       // カートページへ遷移するか確認

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 
 const API_BASE_URL = 'https://komapay.p-kmt.com';
 
@@ -8,6 +9,7 @@ const Cart = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const { fetchCartCount } = useAuth();
 
   console.log('===== Cart.jsx がマウントされました =====');
   alert('Cart.jsx が読み込まれました！');
@@ -66,6 +68,9 @@ const Cart = () => {
         console.warn('カートデータが期待する構造ではありません:', data);
         setCartItems([]);
       }
+      
+      // グローバルなカート数を更新
+      await fetchCartCount();
     } catch (err) {
       console.error('Cart fetch error:', String(err));
       console.error('エラーメッセージ:', err.message || 'メッセージなし');
@@ -96,7 +101,7 @@ const Cart = () => {
       }
 
       // カートを再取得
-      fetchCart();
+      await fetchCart();
     } catch (err) {
       console.error('Update quantity error:', err);
       alert(err.message || '数量の更新に失敗しました');
@@ -123,7 +128,7 @@ const Cart = () => {
       }
 
       // カートを再取得
-      fetchCart();
+      await fetchCart();
     } catch (err) {
       console.error('Remove item error:', err);
       alert(err.message || '削除に失敗しました');
@@ -150,6 +155,9 @@ const Cart = () => {
       }
 
       setCartItems([]);
+      
+      // グローバルなカート数を更新
+      await fetchCartCount();
     } catch (err) {
       console.error('Clear cart error:', err);
       alert(err.message || 'カートのクリアに失敗しました');

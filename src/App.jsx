@@ -15,8 +15,8 @@ import './App.css';
 function App() {
   return (
     <Router>
-      <Header />
       <AuthProvider>
+        <Header />
         {/* 開発環境でのみデバッグログを表示 */}
         <DebugLogger />
         <Routes>
