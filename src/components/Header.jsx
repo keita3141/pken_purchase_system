@@ -1,10 +1,17 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { cartCount } = useAuth();
+  const { cartCount, user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    setIsMenuOpen(false);
+    navigate('/login');
+  };
 
   return (
     <>
@@ -19,14 +26,26 @@ const Header = () => {
           </button>
           <h1 className="text-lg font-bold">Mobile Order</h1>
         </div>
-        <Link to="/cart" aria-label="カート画面へ" className="text-2xl relative">
-          <span className="material-icons">shopping_cart</span>
-          {cartCount > 0 && (
-            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">
-              {cartCount > 99 ? '99+' : cartCount}
-            </span>
+        
+        <div className="flex items-center gap-3">
+          {/* ユーザー名表示（PC表示） */}
+          {user && (
+            <div className="hidden md:flex items-center gap-2 text-sm text-stone-600">
+              <span className="material-icons text-lg">account_circle</span>
+              <span className="font-medium">{user.name || user.student_id}</span>
+            </div>
           )}
-        </Link>
+          
+          {/* カートアイコン */}
+          <Link to="/cart" aria-label="カート画面へ" className="text-2xl relative">
+            <span className="material-icons">shopping_cart</span>
+            {cartCount > 0 && (
+              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">
+                {cartCount > 99 ? '99+' : cartCount}
+              </span>
+            )}
+          </Link>
+        </div>
       </header>
 
       {/* ドロワーメニュー */}
@@ -39,9 +58,9 @@ const Header = () => {
           />
           
           {/* メニューパネル */}
-          <div className="fixed top-0 left-0 w-64 h-full bg-white shadow-lg z-50 transform transition-transform duration-300">
-            <div className="p-4">
-              <div className="flex justify-between items-center mb-6">
+          <div className="fixed top-0 left-0 w-64 h-full bg-white shadow-lg z-50 transform transition-transform duration-300 flex flex-col">
+            <div className="p-4 border-b">
+              <div className="flex justify-between items-center mb-4">
                 <h2 className="text-xl font-bold">メニュー</h2>
                 <button
                   onClick={() => setIsMenuOpen(false)}
@@ -52,45 +71,82 @@ const Header = () => {
                 </button>
               </div>
               
-              <nav className="flex flex-col space-y-2">
+              {/* ユーザー情報表示 */}
+              {user && (
+                <div className="bg-stone-50 rounded-lg p-3 mb-4">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="material-icons text-stone-600">account_circle</span>
+                    <span className="font-bold text-stone-800">{user.name || '名前未設定'}</span>
+                  </div>
+                  <p className="text-xs text-stone-500 ml-8">学生番号: {user.student_id || '-'}</p>
+                </div>
+              )}
+            </div>
+            
+            <nav className="flex-1 flex flex-col p-4 overflow-y-auto">
+              <div className="space-y-2">
                 <Link 
                   to="/" 
-                  className="px-4 py-3 hover:bg-stone-100 rounded transition-colors"
+                  className="px-4 py-3 hover:bg-stone-100 rounded transition-colors flex items-center gap-2"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  商品一覧
+                  <span className="material-icons text-lg">store</span>
+                  <span>商品一覧</span>
                 </Link>
                 <Link 
                   to="/cart" 
-                  className="px-4 py-3 hover:bg-stone-100 rounded transition-colors"
+                  className="px-4 py-3 hover:bg-stone-100 rounded transition-colors flex items-center gap-2"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  カート
+                  <span className="material-icons text-lg">shopping_cart</span>
+                  <span>カート</span>
+                  {cartCount > 0 && (
+                    <span className="ml-auto bg-red-500 text-white text-xs rounded-full px-2 py-0.5">
+                      {cartCount}
+                    </span>
+                  )}
                 </Link>
                 <Link 
                   to="/purchase-history" 
-                  className="px-4 py-3 hover:bg-stone-100 rounded transition-colors"
+                  className="px-4 py-3 hover:bg-stone-100 rounded transition-colors flex items-center gap-2"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  購入履歴
+                  <span className="material-icons text-lg">history</span>
+                  <span>購入履歴</span>
                 </Link>
-                <hr className="my-2" />
-                <Link 
-                  to="/login" 
-                  className="px-4 py-3 hover:bg-stone-100 rounded transition-colors"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  ログイン
-                </Link>
-                <Link 
-                  to="/register" 
-                  className="px-4 py-3 hover:bg-stone-100 rounded transition-colors"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  新規登録
-                </Link>
-              </nav>
-            </div>
+              </div>
+              
+              <div className="mt-auto pt-4 border-t space-y-2">
+                {user ? (
+                  <button
+                    onClick={handleLogout}
+                    className="w-full px-4 py-3 hover:bg-red-50 text-red-600 rounded transition-colors flex items-center gap-2"
+                  >
+                    <span className="material-icons text-lg">logout</span>
+                    <span>ログアウト</span>
+                  </button>
+                ) : (
+                  <>
+                    <Link 
+                      to="/login" 
+                      className="px-4 py-3 hover:bg-stone-100 rounded transition-colors flex items-center gap-2"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      <span className="material-icons text-lg">login</span>
+                      <span>ログイン</span>
+                    </Link>
+                    <Link 
+                      to="/register" 
+                      className="px-4 py-3 hover:bg-stone-100 rounded transition-colors flex items-center gap-2"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      <span className="material-icons text-lg">person_add</span>
+                      <span>新規登録</span>
+                    </Link>
+                  </>
+                )}
+              </div>
+            </nav>
           </div>
         </>
       )}

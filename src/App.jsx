@@ -6,6 +6,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import DebugLogger from './components/DebugLogger';
 import Register from './pages/Register';
 import Login from './pages/Login';
+import LineCallback from './pages/LineCallback';
 import ProductList from './pages/ProductList';
 import ProductDetail from './pages/ProductDetail';
 import Cart from './pages/Cart';
@@ -69,6 +70,10 @@ function App() {
                 <Login />
               </ProtectedRoute>
             }
+          />
+          <Route
+            path="/auth/callback"
+            element={<LineCallback />}
           />
         </Routes>
       </AuthProvider>
