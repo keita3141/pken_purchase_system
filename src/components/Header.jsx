@@ -30,9 +30,9 @@ const Header = () => {
         <div className="flex items-center gap-3">
           {/* ユーザー名表示（PC表示） */}
           {user && (
-            <div className="hidden md:flex items-center gap-2 text-sm text-stone-600">
-              <span className="material-icons text-lg">account_circle</span>
-              <span className="font-medium">{user.name || user.student_id}</span>
+            <div className="hidden md:flex items-center gap-2 bg-stone-100 px-3 py-1.5 rounded-full">
+              <span className="material-icons text-lg text-stone-600">account_circle</span>
+              <span className="font-medium text-stone-800">{user.name || user.student_id}</span>
             </div>
           )}
           
