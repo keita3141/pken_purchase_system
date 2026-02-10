@@ -31,6 +31,22 @@ npm install
 
 ### 2. 環境変数の設定
 
+#### ローカル開発の場合
+
+`.env.local`ファイルが既に用意されています。このファイルでローカル開発用の設定を行います：
+
+```env
+# ローカルバックエンドAPI URL
+VITE_API_BASE_URL=http://localhost:3000
+
+# または、本番APIを使いたい場合
+# VITE_API_BASE_URL=https://komapay.p-kmt.com
+```
+
+**注意**: `.env.local`は`.gitignore`に含まれており、Gitリポジトリにコミットされません。
+
+#### 本番環境の場合
+
 `.env.example`をコピーして`.env`ファイルを作成します：
 
 ```bash
@@ -44,10 +60,30 @@ cp .env.example .env
 VITE_LIFF_ID=your-liff-id-here
 
 # バックエンドAPI URL
-VITE_API_BASE_URL=http://localhost:3000
+VITE_API_BASE_URL=https://komapay.p-kmt.com
 ```
 
-### 3. LIFF IDの取得方法
+### 3. ローカルで開発サーバーを起動
+
+```bash
+npm run dev
+```
+
+ブラウザで `http://localhost:5173` にアクセスしてください。
+
+### 4. バックエンドサーバーの準備
+
+フロントエンドがローカルのバックエンドAPIに接続する場合は、別のターミナルでバックエンドサーバーを起動してください：
+
+```bash
+# バックエンドディレクトリで
+cd ../backend
+npm start  # または適切な起動コマンド
+```
+
+バックエンドサーバーは `http://localhost:3000` で動作する必要があります。
+
+### 5. LIFF IDの取得方法
 
 1. [LINE Developers Console](https://developers.line.biz/console/)にログイン
 2. プロバイダーを選択またはり作成
