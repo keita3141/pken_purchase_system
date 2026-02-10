@@ -20,7 +20,7 @@ const Header = () => {
         <div className="flex items-center gap-6">
           {/* モバイルメニューボタン */}
           <button
-            className="md:hidden text-stone-800 text-2xl focus:outline-none"
+            className="md:hidden text-stone-800 text-2xl focus:outline-none bg-stone-100 hover:bg-stone-200 rounded p-2 transition-colors"
             aria-label="メニューを開く"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
