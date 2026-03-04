@@ -15,7 +15,7 @@ const Header = () => {
 
   return (
     <>
-      <header className="fixed top-0 left-0 w-full h-14 bg-green-600 bg-opacity-100 shadow-md z-50 flex items-center justify-between px-4 md:px-6 border-b border-green-700">
+      <header className="fixed top-0 left-0 w-full h-14 bg-green-600 shadow-md z-[100] flex items-center justify-between px-4 md:px-6 border-b border-green-700" style={{ backgroundColor: '#16a34a' }}>
         {/* 左側：ロゴとナビゲーション */}
         <div className="flex items-center gap-6">
           {/* モバイルメニューボタン */}
@@ -84,13 +84,13 @@ const Header = () => {
         <>
           {/* オーバーレイ */}
           <div 
-            className="fixed inset-0 bg-black bg-opacity-50 z-[60]"
+            className="fixed inset-0 bg-black bg-opacity-50 z-[110]"
             onClick={() => setIsMenuOpen(false)}
           />
           
           {/* メニューパネル */}
-          <div className="fixed top-0 left-0 w-64 h-full bg-white bg-opacity-100 shadow-2xl z-[70] transform transition-transform duration-300 flex flex-col border-r-4 border-stone-300">
-            <div className="p-4 border-b-2 border-stone-200 bg-stone-50 bg-opacity-100">
+          <div className="fixed top-0 left-0 w-64 h-full bg-white shadow-2xl z-[120] transform transition-transform duration-300 flex flex-col border-r-4 border-stone-300" style={{ backgroundColor: '#ffffff' }}>
+            <div className="p-4 border-b-2 border-stone-200 bg-stone-50" style={{ backgroundColor: '#fafaf9' }}>
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-xl font-bold text-stone-800">メニュー</h2>
                 <button

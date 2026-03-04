@@ -88,7 +88,7 @@ const ProductList = () => {
           {/* Search & Sort Area with left sidebar buttons */}
           <div className="flex gap-6">
             <aside className="w-40">
-              <div className="sticky top-4 bg-white p-3 rounded-md shadow-sm">
+              <div className="sticky top-20 bg-white p-3 rounded-md shadow-sm z-10">
                 <h4 className="text-sm font-semibold mb-3">並び替え</h4>
                 <div className="flex flex-col space-y-2">
                   <button
