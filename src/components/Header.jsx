@@ -89,8 +89,8 @@ const Header = () => {
           />
           
           {/* メニューパネル */}
-          <div className="fixed top-0 left-0 w-64 h-full bg-white shadow-2xl z-[70] transform transition-transform duration-300 flex flex-col border-r-4 border-stone-300">
-            <div className="p-4 border-b-2 border-stone-200 bg-stone-50">
+          <div className="fixed top-0 left-0 w-64 h-full bg-white bg-opacity-100 shadow-2xl z-[70] transform transition-transform duration-300 flex flex-col border-r-4 border-stone-300">
+            <div className="p-4 border-b-2 border-stone-200 bg-stone-50 bg-opacity-100">
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-xl font-bold text-stone-800">メニュー</h2>
                 <button
@@ -104,7 +104,7 @@ const Header = () => {
               
               {/* ユーザー情報表示 */}
               {user && (
-                <div className="bg-stone-50 rounded-lg p-3 mb-4">
+                <div className="bg-stone-50 bg-opacity-100 rounded-lg p-3 mb-4">
                   <div className="flex items-center gap-2 mb-1">
                     <span className="material-icons text-stone-600">account_circle</span>
                     <span className="font-bold text-stone-800">{user.name || '名前未設定'}</span>
