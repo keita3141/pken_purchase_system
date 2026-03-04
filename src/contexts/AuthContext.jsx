@@ -98,38 +98,75 @@ export const AuthProvider = ({ children }) => {
   const checkAndAuthenticateUser = async () => {
     try {
       console.log('ユーザー認証チェック開始');
+      
+      // まずローカルストレージのトークンをチェック
+      const token = localStorage.getItem('authToken');
+      const storedUser = sessionStorage.getItem('user');
+      
+      if (token && storedUser) {
+        console.log('保存された認証情報を使用');
+        try {
+          setUser(JSON.parse(storedUser));
+          setLoading(false);
+          return;
+        } catch (e) {
+          console.warn('保存されたユーザー情報のパースに失敗:', e);
+        }
+      }
+
       // LINEプロフィールを取得
       const profile = await liff.getProfile();
       const lineId = profile.userId;
       console.log('LINEプロフィール取得成功:', { lineId, displayName: profile.displayName });
 
       // バックエンドAPIに問い合わせ
-      const response = await fetch('https://komapay.p-kmt.com/api/auth/check', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ line_id: lineId }),
-      });
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 10000); // 10秒タイムアウト
 
-      console.log('認証APIレスポンス:', response.status);
-      const data = await response.json();
-
-      if (response.ok && data.user) {
-        // ユーザーが見つかった場合、自動ログイン
-        console.log('ユーザー認証成功:', data.user);
-        setUser({
-          ...data.user,
-          lineId: lineId,
-          displayName: profile.displayName,
-          pictureUrl: profile.pictureUrl,
+        const response = await fetch('https://komapay.p-kmt.com/api/auth/check', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ line_id: lineId }),
+          signal: controller.signal,
         });
+
+        clearTimeout(timeoutId);
+        console.log('認証APIレスポンス:', response.status);
         
-        // セッションストレージに保存
-        sessionStorage.setItem('user', JSON.stringify(data.user));
-      } else {
-        // ユーザーが見つからない場合はnullのまま（ログインページへリダイレクト）
-        console.log('ユーザーが見つかりません');
+        const data = await response.json();
+
+        if (response.ok && data.user) {
+          // ユーザーが見つかった場合、自動ログイン
+          console.log('ユーザー認証成功:', data.user);
+          setUser({
+            ...data.user,
+            lineId: lineId,
+            displayName: profile.displayName,
+            pictureUrl: profile.pictureUrl,
+          });
+          
+          // セッションストレージに保存
+          sessionStorage.setItem('user', JSON.stringify(data.user));
+        } else {
+          // ユーザーが見つからない場合はnullのまま（ログインページへリダイレクト）
+          console.log('ユーザーが見つかりません');
+          setUser(null);
+        }
+      } catch (fetchError) {
+        console.error('認証API接続エラー:', fetchError);
+        console.error('エラー名:', fetchError.name);
+        console.error('エラーメッセージ:', fetchError.message);
+        
+        if (fetchError.name === 'AbortError') {
+          console.error('認証APIがタイムアウトしました');
+        } else {
+          console.error('認証APIへの接続に失敗しました。ネットワークまたはCORSの問題の可能性があります。');
+        }
+        
+        // API接続失敗時も、ログインページへ遷移できるようにする
         setUser(null);
       }
     } catch (error) {
