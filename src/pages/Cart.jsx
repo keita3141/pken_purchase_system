@@ -219,10 +219,10 @@ const Cart = () => {
                   const quantity = item.quantity || 1;
 
                   return (
-                    <div key={item.id} className="bg-white rounded-lg shadow-sm p-3 md:p-4">
-                      <div className="flex gap-3 md:gap-4">
+                    <div key={item.id} className="bg-white rounded-lg shadow-sm p-2 md:p-3">
+                      <div className="flex gap-2 md:gap-3">
                         {/* Product Image */}
-                        <Link to={`/product/${product.id}`} className="w-12 h-12 md:w-16 md:h-16 bg-stone-200 rounded flex-shrink-0 flex items-center justify-center overflow-hidden">
+                        <Link to={`/product/${product.id}`} className="w-10 h-10 md:w-12 md:h-12 bg-stone-200 rounded flex-shrink-0 flex items-center justify-center overflow-hidden">
                           {productImage ? (
                             <img src={productImage} alt={productName} className="w-full h-full object-cover" />
                           ) : (
@@ -233,24 +233,24 @@ const Cart = () => {
                         {/* Product Info */}
                         <div className="flex-1 min-w-0 flex flex-col justify-between">
                           <div>
-                            <Link to={`/product/${product.id}`} className="font-bold text-sm md:text-base text-stone-800 hover:text-stone-600 block truncate">
+                            <Link to={`/product/${product.id}`} className="font-bold text-xs md:text-sm text-stone-800 hover:text-stone-600 block truncate">
                               {productName}
                             </Link>
-                            <p className="text-stone-600 text-sm md:text-base mt-1">¥{productPrice.toLocaleString()}</p>
+                            <p className="text-stone-600 text-xs md:text-sm mt-0.5">¥{productPrice.toLocaleString()}</p>
                           </div>
 
                           {/* Quantity Controls */}
-                          <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-1 md:gap-2">
                             <button
                               onClick={() => updateQuantity(item.id, quantity - 1)}
-                              className="w-7 h-7 md:w-8 md:h-8 rounded border border-stone-300 flex items-center justify-center hover:bg-stone-100 text-sm"
+                              className="w-6 h-6 md:w-7 md:h-7 rounded border border-stone-300 flex items-center justify-center hover:bg-stone-100 text-xs"
                             >
                               -
                             </button>
-                            <span className="w-8 md:w-10 text-center text-sm md:text-base">{quantity}</span>
+                            <span className="w-6 md:w-8 text-center text-xs md:text-sm">{quantity}</span>
                             <button
                               onClick={() => updateQuantity(item.id, quantity + 1)}
-                              className="w-7 h-7 md:w-8 md:h-8 rounded border border-stone-300 flex items-center justify-center hover:bg-stone-100 text-sm"
+                              className="w-6 h-6 md:w-7 md:h-7 rounded border border-stone-300 flex items-center justify-center hover:bg-stone-100 text-xs"
                             >
                               +
                             </button>
@@ -264,11 +264,11 @@ const Cart = () => {
                             className="text-red-600 hover:text-red-700"
                             aria-label="削除"
                           >
-                            <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                             </svg>
                           </button>
-                          <p className="font-bold text-sm md:text-base text-stone-800">
+                          <p className="font-bold text-xs md:text-sm text-stone-800">
                             ¥{(productPrice * quantity).toLocaleString()}
                           </p>
                         </div>
