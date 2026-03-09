@@ -94,14 +94,21 @@ const Header = () => {
               
               {/* ユーザー情報表示（ログインなしは「ゲスト」と表示） */}
               <div className="bg-stone-50 bg-opacity-100 rounded-lg p-3 mb-4">
-                <div className="flex items-center gap-2 mb-1">
+                <div className="flex items-center gap-2 mb-2">
                   <span className="material-icons text-stone-600">account_circle</span>
                   <span className="font-bold text-stone-800">
                     {user ? (user.name || '名前未設定') : 'ゲスト'}
                   </span>
                 </div>
                 {user && (
-                  <p className="text-xs text-stone-500 ml-8">学生番号: {user.student_id || '-'}</p>
+                  <div className="ml-8 space-y-1">
+                    <p className="text-xs text-stone-600">
+                      <span className="font-semibold">名前:</span> {user.name || '未設定'}
+                    </p>
+                    <p className="text-xs text-stone-600">
+                      <span className="font-semibold">学生番号:</span> {user.student_id || '-'}
+                    </p>
+                  </div>
                 )}
               </div>
             </div>
