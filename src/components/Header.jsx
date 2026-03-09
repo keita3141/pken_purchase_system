@@ -51,21 +51,13 @@ const Header = () => {
         
         {/* 右側：ユーザー情報とカート */}
         <div className="flex items-center gap-3">
-          {/* ユーザー名表示 */}
-          {user ? (
-            <div className="hidden md:flex items-center gap-2 bg-green-700 px-3 py-1.5 rounded hover:bg-green-800 transition-colors">
-              <span className="material-icons text-lg text-white">account_circle</span>
-              <span className="text-sm text-white font-medium">{user.name || user.student_id}</span>
-            </div>
-          ) : (
-            <Link 
-              to="/login" 
-              className="hidden md:flex items-center gap-1 px-4 py-1.5 bg-white text-green-600 rounded hover:bg-green-50 transition-colors text-sm font-medium"
-            >
-              <span className="material-icons text-lg">login</span>
-              <span>ログイン</span>
-            </Link>
-          )}
+          {/* ユーザー名表示（ログインなしは「ゲスト」と表示） */}
+          <div className="hidden md:flex items-center gap-2 bg-green-700 px-3 py-1.5 rounded hover:bg-green-800 transition-colors">
+            <span className="material-icons text-lg text-white">account_circle</span>
+            <span className="text-sm text-white font-medium">
+              {user ? (user.name || user.student_id) : 'ゲスト'}
+            </span>
+          </div>
           
           {/* カートアイコン */}
           <Link to="/cart" aria-label="カート画面へ" className="flex items-center gap-2 px-3 py-2 hover:bg-green-700 rounded transition-colors">
@@ -100,16 +92,18 @@ const Header = () => {
                 </button>
               </div>
               
-              {/* ユーザー情報表示 */}
-              {user && (
-                <div className="bg-stone-50 bg-opacity-100 rounded-lg p-3 mb-4">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="material-icons text-stone-600">account_circle</span>
-                    <span className="font-bold text-stone-800">{user.name || '名前未設定'}</span>
-                  </div>
-                  <p className="text-xs text-stone-500 ml-8">学生番号: {user.student_id || '-'}</p>
+              {/* ユーザー情報表示（ログインなしは「ゲスト」と表示） */}
+              <div className="bg-stone-50 bg-opacity-100 rounded-lg p-3 mb-4">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="material-icons text-stone-600">account_circle</span>
+                  <span className="font-bold text-stone-800">
+                    {user ? (user.name || '名前未設定') : 'ゲスト'}
+                  </span>
                 </div>
-              )}
+                {user && (
+                  <p className="text-xs text-stone-500 ml-8">学生番号: {user.student_id || '-'}</p>
+                )}
+              </div>
             </div>
             
             <nav className="flex-1 flex flex-col p-4 overflow-y-auto">
