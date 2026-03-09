@@ -208,12 +208,15 @@ const ProductDetail = () => {
                     <div className="flex justify-between items-start mb-2">
                       <h1 className="text-xl md:text-2xl font-bold text-stone-800">{product.name}</h1>
                       {product.popularity && (
-                        <span className="bg-yellow-100 text-yellow-800 text-xs font-semibold px-2.5 py-0.5 rounded">
+                        <span className="bg-gradient-to-r from-orange-400 to-yellow-400 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">
                           人気度: {product.popularity}
                         </span>
                       )}
                     </div>
-                    <p className="text-xl font-bold text-stone-600">¥{product.price ? product.price.toLocaleString() : '-'}</p>
+                    <div className="flex items-baseline gap-1">
+                      <span className="text-3xl md:text-4xl font-black text-mos-green">¥{product.price ? product.price.toLocaleString() : '-'}</span>
+                      <span className="text-xs text-stone-500">税込</span>
+                    </div>
                   </div>
 
                   <div className="mb-6">
@@ -249,14 +252,14 @@ const ProductDetail = () => {
                     <div className="flex items-center gap-3">
                       <button
                         onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                        className="w-10 h-10 rounded border-2 border-stone-300 flex items-center justify-center hover:bg-stone-100 transition-colors text-lg font-bold"
+                        className="w-10 h-10 rounded-lg border-2 border-mos-green text-mos-green flex items-center justify-center hover:bg-green-50 transition-all duration-200 text-lg font-bold active:scale-95"
                       >
                         -
                       </button>
                       <span className="text-xl font-bold text-stone-800 min-w-[3rem] text-center">{quantity}</span>
                       <button
                         onClick={() => setQuantity(quantity + 1)}
-                        className="w-10 h-10 rounded border-2 border-stone-300 flex items-center justify-center hover:bg-stone-100 transition-colors text-lg font-bold"
+                        className="w-10 h-10 rounded-lg border-2 border-mos-green text-mos-green flex items-center justify-center hover:bg-green-50 transition-all duration-200 text-lg font-bold active:scale-95"
                       >
                         +
                       </button>
@@ -267,7 +270,7 @@ const ProductDetail = () => {
                     <button 
                       onClick={handleAddToCart}
                       disabled={addingToCart}
-                      className="w-full h-24 bg-stone-800 hover:bg-stone-700 text-white font-bold px-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-base md:text-lg flex items-center justify-center"
+                      className="w-full h-24 bg-mos-green hover:bg-mos-green-dark text-white font-bold px-4 rounded-2xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed text-base md:text-lg flex items-center justify-center shadow-lg hover:shadow-xl active:scale-95"
                     >
                       {addingToCart ? '追加中...' : 'カートに入れる'}
                     </button>
@@ -282,17 +285,28 @@ const ProductDetail = () => {
                 <h2 className="text-xl font-bold text-stone-800 mb-4">関連商品</h2>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   {relatedProducts.map(related => (
-                    <Link to={`/product/${related.id}`} key={related.id} className="product-card block bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
-                      <div className="aspect-square bg-stone-200 flex items-center justify-center relative">
+                    <Link 
+                      to={`/product/${related.id}`} 
+                      key={related.id} 
+                      className="block bg-white rounded-2xl shadow-sm overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 active:scale-95 group"
+                    >
+                      <div className="aspect-square bg-gradient-to-br from-stone-100 to-stone-200 relative flex items-center justify-center overflow-hidden">
                         {related.image_url ? (
-                          <img src={related.image_url} alt={related.name} className="w-full h-full object-cover" />
+                          <img 
+                            src={related.image_url} 
+                            alt={related.name} 
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" 
+                          />
                         ) : (
                           <span className="text-stone-400 text-sm">No Image</span>
                         )}
                       </div>
-                      <div className="p-4">
-                        <h3 className="font-bold text-stone-800 truncate">{related.name}</h3>
-                        <p className="text-stone-600 text-sm">¥{related.price.toLocaleString()}</p>
+                      <div className="p-3">
+                        <h3 className="font-bold text-sm md:text-base text-stone-800 truncate mb-1">{related.name}</h3>
+                        <div className="flex items-baseline gap-1">
+                          <span className="text-lg md:text-xl font-black text-mos-green">¥{related.price.toLocaleString()}</span>
+                          <span className="text-xs text-stone-500">税込</span>
+                        </div>
                       </div>
                     </Link>
                   ))}

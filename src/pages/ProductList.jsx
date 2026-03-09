@@ -89,31 +89,31 @@ const ProductList = () => {
           <div className="flex gap-6">
             <aside className="w-40">
               <div className="sticky top-20 bg-white p-3 rounded-md shadow-sm z-10">
-                <h4 className="text-sm font-semibold mb-3">並び替え</h4>
+                <h4 className="text-sm font-semibold mb-3 text-stone-800">並び替え</h4>
                 <div className="flex flex-col space-y-2">
                   <button
-                    className={`px-3 py-2 rounded text-sm text-left ${sortType === 'popularity' ? 'bg-blue-600 text-white' : 'bg-white text-stone-700 border'}`}
+                    className={`px-3 py-2 rounded-lg text-sm text-left font-semibold transition-all duration-200 active:scale-95 ${sortType === 'popularity' ? 'bg-mos-green text-white shadow-md' : 'bg-white text-stone-700 border border-stone-300 hover:border-mos-green hover:bg-green-50'}`}
                     onClick={() => setSortType('popularity')}
                   >
                     売れ筋順
                   </button>
 
                   <button
-                    className={`px-3 py-2 rounded text-sm text-left ${sortType === 'price_asc' ? 'bg-blue-600 text-white' : 'bg-white text-stone-700 border'}`}
+                    className={`px-3 py-2 rounded-lg text-sm text-left font-semibold transition-all duration-200 active:scale-95 ${sortType === 'price_asc' ? 'bg-mos-green text-white shadow-md' : 'bg-white text-stone-700 border border-stone-300 hover:border-mos-green hover:bg-green-50'}`}
                     onClick={() => setSortType('price_asc')}
                   >
                     価格が安い順
                   </button>
 
                   <button
-                    className={`px-3 py-2 rounded text-sm text-left ${sortType === 'price_desc' ? 'bg-blue-600 text-white' : 'bg-white text-stone-700 border'}`}
+                    className={`px-3 py-2 rounded-lg text-sm text-left font-semibold transition-all duration-200 active:scale-95 ${sortType === 'price_desc' ? 'bg-mos-green text-white shadow-md' : 'bg-white text-stone-700 border border-stone-300 hover:border-mos-green hover:bg-green-50'}`}
                     onClick={() => setSortType('price_desc')}
                   >
                     価格が高い順
                   </button>
 
                   <button
-                    className={`px-3 py-2 rounded text-sm text-left ${sortType === 'name' ? 'bg-blue-600 text-white' : 'bg-white text-stone-700 border'}`}
+                    className={`px-3 py-2 rounded-lg text-sm text-left font-semibold transition-all duration-200 active:scale-95 ${sortType === 'name' ? 'bg-mos-green text-white shadow-md' : 'bg-white text-stone-700 border border-stone-300 hover:border-mos-green hover:bg-green-50'}`}
                     onClick={() => setSortType('name')}
                   >
                     名前順
@@ -139,17 +139,31 @@ const ProductList = () => {
               <div className="product-grid">
                 {displayedProducts.length > 0 ? (
                   displayedProducts.map(product => (
-                    <Link to={`/product/${product.id}`} key={product.id} className="product-card">
-                      <div className="card-image-wrapper">
+                    <Link 
+                      to={`/product/${product.id}`} 
+                      key={product.id} 
+                      className="block bg-white rounded-2xl shadow-sm overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 active:scale-95 group"
+                    >
+                      <div className="aspect-square bg-gradient-to-br from-stone-100 to-stone-200 relative flex items-center justify-center overflow-hidden">
                         {product.image_url ? (
-                          <img src={product.image_url} alt={product.name} className="card-image" />
+                          <img 
+                            src={product.image_url} 
+                            alt={product.name} 
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" 
+                          />
                         ) : (
-                          <span>No Image</span>
+                          <span className="text-stone-400 text-sm">No Image</span>
                         )}
                       </div>
-                      <div className="card-content">
-                        <h3 className="card-title">{product.name}</h3>
-                        <p className="card-price">¥{product.price ? product.price.toLocaleString() : '-'}</p>
+                      <div className="p-4 relative">
+                        <div className="absolute -top-3 right-4 bg-gradient-to-r from-orange-400 to-yellow-400 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">
+                          人気
+                        </div>
+                        <h3 className="text-base md:text-lg font-bold text-stone-800 mb-2 truncate">{product.name}</h3>
+                        <div className="flex items-baseline gap-1">
+                          <span className="text-2xl md:text-3xl font-black text-mos-green">¥{product.price ? product.price.toLocaleString() : '-'}</span>
+                          <span className="text-xs text-stone-500">税込</span>
+                        </div>
                       </div>
                     </Link>
                   ))

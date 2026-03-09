@@ -246,14 +246,14 @@ const Cart = () => {
                           <div className="flex items-center gap-1">
                             <button
                               onClick={() => updateQuantity(item.id, quantity - 1)}
-                              className="w-5 h-5 md:w-6 md:h-6 rounded border border-stone-300 flex items-center justify-center hover:bg-stone-100 text-xs"
+                              className="w-5 h-5 md:w-6 md:h-6 rounded border border-mos-green text-mos-green flex items-center justify-center hover:bg-green-50 text-xs transition-all duration-200 active:scale-95"
                             >
                               -
                             </button>
                             <span className="w-5 md:w-6 text-center text-xs">{quantity}</span>
                             <button
                               onClick={() => updateQuantity(item.id, quantity + 1)}
-                              className="w-5 h-5 md:w-6 md:h-6 rounded border border-stone-300 flex items-center justify-center hover:bg-stone-100 text-xs"
+                              className="w-5 h-5 md:w-6 md:h-6 rounded border border-mos-green text-mos-green flex items-center justify-center hover:bg-green-50 text-xs transition-all duration-200 active:scale-95"
                             >
                               +
                             </button>
@@ -305,13 +305,13 @@ const Cart = () => {
                   </div>
 
                   <button
-                    className="w-full h-24 bg-stone-800 hover:bg-stone-700 text-white font-bold px-4 rounded-lg transition-colors text-sm md:text-base flex items-center justify-center"
+                    className="w-full h-24 bg-mos-green hover:bg-mos-green-dark text-white font-bold px-4 rounded-2xl transition-all duration-200 text-sm md:text-base flex items-center justify-center shadow-lg hover:shadow-xl active:scale-95"
                     onClick={() => alert('購入機能はまだ実装されていません')}
                   >
                     購入手続きへ
                   </button>
 
-                  <Link to="/" className="block text-center link-text mt-3 md:mt-4 text-sm md:text-base h-24 flex items-center justify-center">
+                  <Link to="/" className="block text-center text-mos-green hover:text-mos-green-dark font-semibold mt-3 md:mt-4 text-sm md:text-base h-24 flex items-center justify-center border-2 border-mos-green rounded-2xl transition-all duration-200 hover:bg-green-50 active:scale-95">
                     買い物を続ける
                   </Link>
                 </div>
