@@ -77,7 +77,13 @@ const Cart = () => {
   };
 
   const updateQuantity = async (itemId, newQuantity) => {
-    if (newQuantity < 1) return;
+    if (newQuantity < 0) return;
+
+    // 数量が0の場合は削除（確認なし）
+    if (newQuantity === 0) {
+      await removeItem(itemId, false);
+      return;
+    }
 
     try {
       const token = localStorage.getItem('authToken');
@@ -104,8 +110,8 @@ const Cart = () => {
     }
   };
 
-  const removeItem = async (itemId) => {
-    if (!confirm('この商品をカートから削除しますか？')) return;
+  const removeItem = async (itemId, showConfirm = true) => {
+    if (showConfirm && !confirm('この商品をカートから削除しますか？')) return;
 
     try {
       const token = localStorage.getItem('authToken');
@@ -238,7 +244,6 @@ const Cart = () => {
                             <button
                               onClick={() => updateQuantity(item.id, quantity - 1)}
                               className="w-7 h-7 md:w-8 md:h-8 rounded border border-stone-300 flex items-center justify-center hover:bg-stone-100 text-sm"
-                              disabled={quantity <= 1}
                             >
                               -
                             </button>

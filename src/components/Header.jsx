@@ -70,11 +70,9 @@ const Header = () => {
           {/* カートアイコン */}
           <Link to="/cart" aria-label="カート画面へ" className="flex items-center gap-2 px-3 py-2 hover:bg-green-700 rounded transition-colors">
             <span className="material-icons text-white text-2xl">shopping_cart</span>
-            {cartCount > 0 && (
-              <span className="bg-red-500 text-white text-sm px-2 py-0.5 rounded-full font-bold min-w-[24px] text-center">
-                {cartCount > 99 ? '99+' : cartCount}
-              </span>
-            )}
+            <span className="bg-red-500 text-white text-sm px-2 py-0.5 rounded-full font-bold min-w-[24px] text-center">
+              {cartCount > 99 ? '99+' : cartCount}
+            </span>
           </Link>
         </div>
       </header>
