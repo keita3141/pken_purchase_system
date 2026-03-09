@@ -182,9 +182,9 @@ const ProductDetail = () => {
         <div className="container">
           <div className="product-detail-container">
             <div className="detail-card bg-white rounded-lg shadow-sm overflow-hidden">
-              <div className="md:flex">
+              <div className="flex flex-col md:flex-row">
                 {/* Image Section */}
-                <div className="md:w-2/5 bg-stone-200 aspect-square md:aspect-auto flex items-center justify-center relative max-h-96">
+                <div className="md:w-2/5 bg-stone-200 flex items-center justify-center relative max-h-48 md:max-h-80">
                   {product.image_url ? (
                     <img src={product.image_url} alt={product.name} className="w-full h-full object-cover" />
                   ) : (
@@ -193,10 +193,10 @@ const ProductDetail = () => {
                 </div>
 
                 {/* Content Section */}
-                <div className="p-6 md:w-3/5 flex flex-col">
-                  <div className="mb-6">
+                <div className="p-4 md:p-6 md:w-3/5 flex flex-col">
+                  <div className="mb-4 md:mb-6">
                     <div className="flex justify-between items-start mb-2">
-                      <h1 className="text-2xl font-bold text-stone-800">{product.name}</h1>
+                      <h1 className="text-xl md:text-2xl font-bold text-stone-800">{product.name}</h1>
                       {product.popularity && (
                         <span className="bg-yellow-100 text-yellow-800 text-xs font-semibold px-2.5 py-0.5 rounded">
                           人気度: {product.popularity}
