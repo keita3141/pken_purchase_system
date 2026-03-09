@@ -7,6 +7,16 @@ const Header = () => {
   const { cartCount, user, logout } = useAuth();
   const navigate = useNavigate();
 
+  // デバッグ用：userオブジェクトの内容を確認
+  React.useEffect(() => {
+    console.log('Header - user情報:', user);
+    if (user) {
+      console.log('Header - user.name:', user.name);
+      console.log('Header - user.displayName:', user.displayName);
+      console.log('Header - user.student_id:', user.student_id);
+    }
+  }, [user]);
+
   const handleLogout = () => {
     logout();
     setIsMenuOpen(false);
@@ -55,7 +65,7 @@ const Header = () => {
           <div className="hidden md:flex items-center gap-2 bg-green-700 px-3 py-1.5 rounded hover:bg-green-800 transition-colors">
             <span className="material-icons text-lg text-white">account_circle</span>
             <span className="text-sm text-white font-medium">
-              {user ? (user.name || user.student_id) : 'ゲスト'}
+              {user ? (user.name || user.displayName || user.student_id || '名前未設定') : 'ゲスト'}
             </span>
           </div>
           
@@ -97,13 +107,13 @@ const Header = () => {
                 <div className="flex items-center gap-2 mb-2">
                   <span className="material-icons text-stone-600">account_circle</span>
                   <span className="font-bold text-stone-800">
-                    {user ? (user.name || '名前未設定') : 'ゲスト'}
+                    {user ? (user.name || user.displayName || user.student_id || '名前未設定') : 'ゲスト'}
                   </span>
                 </div>
                 {user && (
                   <div className="ml-8 space-y-1">
                     <p className="text-xs text-stone-600">
-                      <span className="font-semibold">名前:</span> {user.name || '未設定'}
+                      <span className="font-semibold">名前:</span> {user.name || user.displayName || '未設定'}
                     </p>
                     <p className="text-xs text-stone-600">
                       <span className="font-semibold">学生番号:</span> {user.student_id || '-'}
