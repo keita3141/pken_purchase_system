@@ -3,6 +3,10 @@ import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
 const ProtectedRoute = ({ children }) => {
+  // 一時的にログイン機能を無効化
+  return children;
+
+  /* 元のコード（ログイン機能を有効にする場合は以下のコメントを外す）
   const { user, loading } = useAuth();
   const location = useLocation();
 
@@ -33,6 +37,7 @@ const ProtectedRoute = ({ children }) => {
   }
 
   return children;
+  */
 };
 
 export default ProtectedRoute;
