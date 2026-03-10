@@ -225,7 +225,7 @@ const Cart = () => {
                     <div key={item.id} className="bg-white rounded-lg shadow-sm p-1.5 md:p-2">
                       <div className="flex gap-1.5">
                         {/* Product Image */}
-                        <Link to={`/product/${product.id}`} className="w-12 md:w-16 bg-stone-200 rounded flex-shrink-0 flex items-center justify-center overflow-hidden aspect-square">
+                        <Link to={`/product/${product.id}`} className="w-10 md:w-12 bg-stone-200 rounded flex-shrink-0 flex items-center justify-center overflow-hidden aspect-square">
                           {productImage ? (
                             <img src={productImage} alt={productName} className="w-full h-full object-cover" />
                           ) : (
@@ -234,46 +234,50 @@ const Cart = () => {
                         </Link>
 
                         {/* Product Info */}
-                        <div className="flex-1 min-w-0 flex flex-col justify-between">
-                          <div>
+                        <div className="flex-1 min-w-0 flex md:flex-col justify-between md:justify-between">
+                          {/* Left section: name and quantity */}
+                          <div className="flex-1 min-w-0">
                             <Link to={`/product/${product.id}`} className="font-bold text-xs md:text-sm text-stone-800 hover:text-stone-600 block truncate">
                               {productName}
                             </Link>
                             <p className="text-stone-600 text-xs mt-0.5">¥{productPrice.toLocaleString()}</p>
                           </div>
 
-                          {/* Quantity Controls */}
-                          <div className="flex items-center gap-0.5">
-                            <button
-                              onClick={() => updateQuantity(item.id, quantity - 1)}
-                              className="w-4 h-4 md:w-6 md:h-6 rounded border border-mos-green text-mos-green flex items-center justify-center hover:bg-green-50 text-xs transition-all duration-200 active:scale-95"
-                            >
-                              -
-                            </button>
-                            <span className="w-4 md:w-6 text-center text-xs">{quantity}</span>
-                            <button
-                              onClick={() => updateQuantity(item.id, quantity + 1)}
-                              className="w-4 h-4 md:w-6 md:h-6 rounded border border-mos-green text-mos-green flex items-center justify-center hover:bg-green-50 text-xs transition-all duration-200 active:scale-95"
-                            >
-                              +
-                            </button>
-                          </div>
-                        </div>
+                          {/* Right section: quantity and actions */}
+                          <div className="flex flex-col items-end justify-between">
+                            {/* Quantity Controls */}
+                            <div className="flex items-center gap-0.5">
+                              <button
+                                onClick={() => updateQuantity(item.id, quantity - 1)}
+                                className="w-4 h-4 md:w-6 md:h-6 rounded border border-mos-green text-mos-green flex items-center justify-center hover:bg-green-50 text-xs transition-all duration-200 active:scale-95"
+                              >
+                                -
+                              </button>
+                              <span className="w-4 md:w-6 text-center text-xs">{quantity}</span>
+                              <button
+                                onClick={() => updateQuantity(item.id, quantity + 1)}
+                                className="w-4 h-4 md:w-6 md:h-6 rounded border border-mos-green text-mos-green flex items-center justify-center hover:bg-green-50 text-xs transition-all duration-200 active:scale-95"
+                              >
+                                +
+                              </button>
+                            </div>
 
-                        {/* Remove Button and Price */}
-                        <div className="flex flex-col justify-between items-end gap-1">
-                          <button
-                            onClick={() => removeItem(item.id)}
-                            className="text-red-600 hover:text-red-700 flex-shrink-0"
-                            aria-label="削除"
-                          >
-                            <svg className="w-3.5 h-3.5 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                            </svg>
-                          </button>
-                          <p className="font-bold text-xs md:text-sm text-stone-800">
-                            ¥{(productPrice * quantity).toLocaleString()}
-                          </p>
+                            {/* Remove Button and Price */}
+                            <div className="flex items-center gap-1">
+                              <button
+                                onClick={() => removeItem(item.id)}
+                                className="text-red-600 hover:text-red-700 flex-shrink-0"
+                                aria-label="削除"
+                              >
+                                <svg className="w-3.5 h-3.5 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                </svg>
+                              </button>
+                              <p className="font-bold text-xs md:text-sm text-stone-800">
+                                ¥{(productPrice * quantity).toLocaleString()}
+                              </p>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
