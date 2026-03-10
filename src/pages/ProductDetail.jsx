@@ -213,6 +213,11 @@ const ProductDetail = () => {
                         </span>
                       )}
                     </div>
+                    {product.seller && (
+                      <div className="text-sm text-stone-600 mb-2">
+                        販売者: <span className="font-semibold text-stone-700">{product.seller}</span>
+                      </div>
+                    )}
                     <div className="flex items-baseline gap-1">
                       <span className="text-3xl md:text-4xl font-black text-mos-green">¥{product.price ? product.price.toLocaleString() : '-'}</span>
                       <span className="text-xs text-stone-500">税込</span>
