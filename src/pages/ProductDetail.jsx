@@ -208,7 +208,7 @@ const ProductDetail = () => {
                     <div className="flex justify-between items-start mb-2">
                       <h1 className="text-3xl font-bold text-[#00873c]">{product.name}</h1>
                       {product.popularity && (
-                        <span className="bg-gradient-to-r from-orange-400 to-yellow-400 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">
+                        <span className="bg-gradient-to-r from-red-500 to-red-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">
                           人気度: {product.popularity}
                         </span>
                       )}

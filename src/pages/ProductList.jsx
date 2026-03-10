@@ -156,7 +156,7 @@ const ProductList = () => {
                         )}
                       </div>
                       <div className="p-4 relative">
-                        <div className="absolute -top-3 right-4 bg-gradient-to-r from-orange-400 to-yellow-400 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">
+                        <div className="absolute -top-3 right-4 bg-gradient-to-r from-red-500 to-red-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">
                           人気
                         </div>
                         <h3 className="text-base md:text-lg font-bold text-stone-800 mb-2 truncate pt-6">{product.name}</h3>
