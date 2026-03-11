@@ -24,14 +24,11 @@ export const AuthProvider = ({ children }) => {
   // カートアイテム数を取得
   const fetchCartCount = async () => {
     try {
-      // 一時的に認証なしでもカート数取得可能にする
-      const token = localStorage.getItem('authToken') || 'guest-token';
-      /* 元のコード（ログイン必須にする場合は以下を有効化）
+      const token = localStorage.getItem('authToken');
       if (!token) {
         setCartCount(0);
         return;
       }
-      */
 
       const response = await fetch('https://komapay.p-kmt.com/api/cart', {
         method: 'GET',
@@ -61,14 +58,12 @@ export const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    // 一時的に認証なしでもカート数を取得
-    fetchCartCount();
-    /* 元のコード（ログイン済みの場合のみカート数取得する場合は以下を有効化）
     const token = localStorage.getItem('authToken');
     if (token) {
       fetchCartCount();
+    } else {
+      setCartCount(0);
     }
-    */
   }, [user]);
 
   const initializeLiff = async () => {

@@ -17,15 +17,12 @@ const Cart = () => {
 
   const fetchCart = async () => {
     try {
-      // 一時的に認証なしでもカート取得可能にする
-      const token = localStorage.getItem('authToken') || 'guest-token';
-      /* 元のコード（ログイン必須にする場合は以下を有効化）
+      const token = localStorage.getItem('authToken');
       if (!token) {
-        setError('ログインしてください');
+        setError('カートを表示するにはログインが必要です');
         setLoading(false);
         return;
       }
-      */
 
       console.log('カート取得開始');
       console.log('トークン:', token ? `あり (長さ: ${token.length})` : 'なし');
@@ -117,7 +114,9 @@ const Cart = () => {
     if (showConfirm && !confirm('この商品をカートから削除しますか？')) return;
 
     try {
-      const token = localStorage.getItem('authToken') || 'guest-token';
+      const token = localStorage.getItem('authToken');
+      if (!token) return;
+      
       const response = await fetch(`${API_BASE_URL}/api/cart/${itemId}`, {
         method: 'DELETE',
         headers: {
@@ -144,7 +143,9 @@ const Cart = () => {
     if (!confirm('カートを空にしますか？')) return;
 
     try {
-      const token = localStorage.getItem('authToken') || 'guest-token';
+      const token = localStorage.getItem('authToken');
+      if (!token) return;
+      
       const response = await fetch(`${API_BASE_URL}/api/cart`, {
         method: 'DELETE',
         headers: {
