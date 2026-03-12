@@ -158,7 +158,10 @@ export const AuthProvider = ({ children }) => {
             localStorage.setItem('authToken', data.token);
             console.log('トークン保存完了');
           } else {
-            console.warn('警告: APIからトークンが返されていません');
+            // トークンが返されない場合は、LINE IDをトークンとして使用（暫定対処）
+            console.warn('警告: APIからトークンが返されていません。LINE IDをトークンとして使用します。');
+            localStorage.setItem('authToken', lineId);
+            console.log('LINE IDをトークンとして保存:', lineId.substring(0, 10) + '...');
           }
           
           setUser({
