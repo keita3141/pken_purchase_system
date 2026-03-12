@@ -86,7 +86,9 @@ const Cart = () => {
         return;
       }
 
-      const token = localStorage.getItem('authToken') || 'guest-token';
+      const token = localStorage.getItem('authToken');
+      if (!token) return;
+      
       const response = await fetch(`${API_BASE_URL}/api/cart/${itemId}`, {
         method: 'PUT',
         headers: {
