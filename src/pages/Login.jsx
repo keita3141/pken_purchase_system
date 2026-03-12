@@ -86,7 +86,14 @@ const Login = () => {
 
       // トークンを保存
       if (data.token) {
+        console.log('トークン保存:', data.token.substring(0, 20) + '...');
         localStorage.setItem('authToken', data.token);
+        // 保存確認
+        const savedToken = localStorage.getItem('authToken');
+        console.log('トークン保存確認:', savedToken ? '成功' : '失敗');
+      } else {
+        console.error('サーバーからトークンが返されませんでした:', data);
+        throw new Error('認証トークンが取得できませんでした');
       }
 
       alert('ログインしました！');

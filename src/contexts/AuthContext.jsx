@@ -146,10 +146,21 @@ export const AuthProvider = ({ children }) => {
         console.log('認証APIレスポンス:', response.status);
         
         const data = await response.json();
+        console.log('認証APIレスポンスデータ（全体）:', data);
 
         if (response.ok && data.user) {
           // ユーザーが見つかった場合、自動ログイン
           console.log('ユーザー認証成功:', data.user);
+          
+          // トークンが返されている場合は保存
+          if (data.token) {
+            console.log('トークン取得:', data.token.substring(0, 20) + '...');
+            localStorage.setItem('authToken', data.token);
+            console.log('トークン保存完了');
+          } else {
+            console.warn('警告: APIからトークンが返されていません');
+          }
+          
           setUser({
             ...data.user,
             lineId: lineId,

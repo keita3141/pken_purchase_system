@@ -98,7 +98,11 @@ const ProductDetail = () => {
 
     try {
       const token = localStorage.getItem('authToken');
+      console.log('=== カート追加処理開始 ===');
+      console.log('トークン存在:', token ? 'あり' : 'なし');
+      
       if (!token) {
+        console.error('トークンが見つかりません');
         alert('カートに追加するにはログインが必要です');
         navigate('/login');
         return;
