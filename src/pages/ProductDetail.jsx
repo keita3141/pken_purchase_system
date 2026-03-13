@@ -278,14 +278,12 @@ const ProductDetail = () => {
                       )}
                     </div>
 
-                    {(product.seller || product.category || typeof product.stock !== 'undefined') && (
+                    {(product.seller_name || product.category || typeof product.stock !== 'undefined') && (
                       <div className="flex flex-wrap gap-3 text-sm text-stone-600 mb-2">
-                        {product.seller && (
+                        {product.seller_name && (
                           <div>
                             販売者: <span className="font-semibold text-stone-700">
-                              {typeof product.seller === 'string'
-                                ? product.seller
-                                : product.seller?.shop_name || product.seller?.name_2nd || product.seller?.name_1st || '不明'}
+                              {product.seller_name || '不明'}
                             </span>
                           </div>
                         )}
