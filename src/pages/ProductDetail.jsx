@@ -250,7 +250,7 @@ const ProductDetail = () => {
                   {/* Allergens (Mock data as API might not return it yet based on message.txt) */}
                   {/* message.txtのAPIレスポンス例にはallergensが含まれていないが、
                       元のHTMLにはあったため、データがあれば表示する実装にしておく */}
-                  {product.allergens && product.allergens.length > 0 && (
+                  {Array.isArray(product.allergens) && product.allergens.length > 0 && (
                     <div className="mb-6">
                       <h3 className="font-bold text-stone-700 mb-2">アレルゲン情報</h3>
                       <div className="flex flex-wrap gap-2">
