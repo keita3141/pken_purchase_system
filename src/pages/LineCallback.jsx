@@ -54,6 +54,7 @@ const LineCallback = () => {
       }
 
       // ユーザー情報をコンテキストに保存
+      // Note: login() が userData を正規化し、DB object の直接保存を防ぐ
       await login(data.user);
 
       // カート数を取得

@@ -196,8 +196,8 @@ export const AuthProvider = ({ children }) => {
           console.log('✅ Setting user object:', { id: userObject.id, displayName: userObject.displayName });
           setUser(userObject);
           
-          // セッションストレージに保存
-          sessionStorage.setItem('user', JSON.stringify(data.user));
+          // セッションストレージに保存（setUser と同じ形式で保存）
+          sessionStorage.setItem('user', JSON.stringify(userObject));
         } else {
           // ユーザーが見つからない場合はnullのまま（ログインページへリダイレクト）
           console.log('ユーザーが見つかりません');
@@ -227,8 +227,25 @@ export const AuthProvider = ({ children }) => {
   };
 
   const login = async (userData) => {
-    setUser(userData);
-    sessionStorage.setItem('user', JSON.stringify(userData));
+    // userData は DB user object なので、セッションストレージに直接保存するのではなく、
+    // 形式を統一する
+    const normalizedUser = {
+      ...userData,
+      // displayName と pictureUrl は userData に含まれていない可能性があるため、
+      // 利用可能な情報から生成する
+      displayName: userData.display_name || userData.name || userData.student_id || 'ゲスト',
+      // lineId は userData に含まれているはず
+      lineId: userData.line_id,
+    };
+    
+    console.log('✅ Setting normalized user from login():', { 
+      id: normalizedUser.id, 
+      displayName: normalizedUser.displayName,
+      keys: Object.keys(normalizedUser).filter(k => k !== 'display_name' && k !== 'name_1st' && k !== 'name_2nd').slice(0, 5)
+    });
+    
+    setUser(normalizedUser);
+    sessionStorage.setItem('user', JSON.stringify(normalizedUser));
   };
 
   const logout = () => {
