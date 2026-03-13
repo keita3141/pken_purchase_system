@@ -5,31 +5,9 @@ import { useAuth } from '../contexts/AuthContext';
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   
-  let cartCount = 0;
-  let user = null;
-  let logout = () => {};
-  
-  try {
-    const authContext = useAuth();
-    
-    // useAuth の戻り値を検証
-    if (!authContext) {
-      console.error('Header: useAuth returned null/undefined');
-    } else {
-      if (authContext.cartCount !== undefined) {
-        cartCount = authContext.cartCount;
-      }
-      if (authContext.user) {
-        user = authContext.user;
-      }
-      if (typeof authContext.logout === 'function') {
-        logout = authContext.logout;
-      }
-    }
-  } catch (err) {
-    console.error('Header: Error initializing auth:', err);
-  }
-  
+  // useAuth must be called at the top level, not inside try-catch
+  const authContext = useAuth();
+  const { cartCount = 0, user = null, logout = () => {} } = authContext || {};
   const navigate = useNavigate();
 
   // デバッグ用：userオブジェクトの内容を確認

@@ -72,6 +72,7 @@ const ProductDetail = () => {
         }
         
         console.log('✅ Valid product:', { id: productData.id, name: productData.name });
+        console.log('Product data (full):', JSON.stringify(productData, null, 2).substring(0, 500));
         setProduct(productData);
         
         // 関連商品の取得
@@ -247,7 +248,11 @@ const ProductDetail = () => {
                 {/* Image Section */}
                 <div className="w-full md:w-2/5 bg-stone-200 flex items-center justify-center relative h-48 md:h-80">
                   {product.image_url ? (
-                    <img src={product.image_url} alt={product.name} className="max-w-full max-h-full object-contain" />
+                    <img 
+                      src={product.image_url} 
+                      alt={product.name} 
+                      className="max-w-full max-h-full object-contain" 
+                    />
                   ) : (
                     <span className="text-2xl text-stone-400">No Image</span>
                   )}
@@ -257,7 +262,7 @@ const ProductDetail = () => {
                 <div className="p-4 md:p-6 md:w-3/5 flex flex-col">
                   <div className="mb-4 md:mb-6">
                     <div className="flex justify-between items-start mb-2">
-                      <h1 className="text-3xl font-bold text-[#00873c]">{product.name}</h1>
+                      <h1 className="text-3xl font-bold text-[#00873c]">{String(product.name)}</h1>
                       {product.popularity && (
                         <span className="bg-gradient-to-r from-red-500 to-red-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">
                           人気度: {product.popularity}
@@ -335,8 +340,8 @@ const ProductDetail = () => {
               </div>
             </div>
 
-            {/* Related Products */}
-            {relatedProducts.length > 0 && (
+            {/* Related Products - TEMPORARILY DISABLED FOR DEBUGGING */}
+            {false && relatedProducts.length > 0 && (
               <div className="mt-12">
                 <h2 className="text-xl font-bold text-stone-800 mb-4">関連商品</h2>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
