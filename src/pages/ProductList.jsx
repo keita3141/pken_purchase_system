@@ -241,13 +241,15 @@ const ProductList = () => {
                           <span className="text-stone-400 text-sm">No Image</span>
                         )}
                       </div>
-                      <div className="p-4 relative">
+                      <div className="p-4">
                         {product.label && (
-                          <div className="absolute -top-3 right-4 bg-gradient-to-r from-red-500 to-red-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">
-                            {product.label}
+                          <div className="mb-2 flex justify-end">
+                            <span className="bg-gradient-to-r from-red-500 to-red-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">
+                              {product.label}
+                            </span>
                           </div>
                         )}
-                        <h3 className="text-base md:text-lg font-bold text-stone-800 mb-2 truncate pt-6">{product.name}</h3>
+                        <h3 className="text-base md:text-lg font-bold text-stone-800 mb-2 leading-snug break-words">{product.name}</h3>
 
                         {(product.category || typeof product.stock !== 'undefined' || product.seller_name || getAllergensText(product.allergens)) && (
                           <div className="flex flex-wrap gap-2 text-xs text-stone-500 mb-2">

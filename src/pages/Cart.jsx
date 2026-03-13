@@ -275,11 +275,6 @@ const Cart = () => {
                           {product.description || ''}
                         </p>
                         
-                        {/* "セットにする" Button */}
-                        <button className="text-xs font-semibold text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-2 py-1 rounded mb-1.5 transition-colors">
-                          セットにする
-                        </button>
-
                         {/* Quantity Controls - Ultra Compact */}
                         <div className="flex items-center gap-1">
                           <span className="text-xs text-stone-600">数量:</span>
