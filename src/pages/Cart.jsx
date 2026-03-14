@@ -246,7 +246,7 @@ const Cart = () => {
 
             {/* Cart Items */}
             <div className="space-y-2">
-              {cartItems.map((item) => {
+              {cartItems.map((item, index) => {
                 const product = item.product || item;
                 const productName = product.name || 'Unknown Product';
                 const productPrice = product.price || 0;
@@ -254,72 +254,77 @@ const Cart = () => {
                 const quantity = item.quantity || 1;
 
                 return (
-                  <div key={item.id} className="bg-white rounded-lg shadow-sm p-2">
-                    {/* Top Row: Image + Product Info + Price */}
-                    <div className="flex gap-2 items-start">
-                      {/* Product Image - Thumbnail (70px max) */}
-                      <Link to={`/product/${product.id}`} className="w-[70px] h-[70px] bg-gray-200 rounded flex-shrink-0 flex items-center justify-center overflow-hidden hover:opacity-80 transition-opacity" style={{ maxWidth: '70px', maxHeight: '70px' }}>
-                        {productImage ? (
-                          <img src={productImage} alt={productName} className="w-full h-full object-contain" style={{ width: '70px', height: 'auto' }} />
-                        ) : (
-                          <span className="text-xs text-stone-400">No Image</span>
-                        )}
-                      </Link>
-
-                      {/* Product Info and Controls - Center Section */}
-                      <div className="flex-1 min-w-0">
-                        <Link to={`/product/${product.id}`} className="font-bold text-xs text-stone-800 hover:text-mos-green line-clamp-2 block mb-0.5">
-                          {productName}
+                  <React.Fragment key={item.id}>
+                    <div className="bg-white rounded-lg shadow-sm p-2">
+                      {/* Top Row: Image + Product Info + Price */}
+                      <div className="flex gap-2 items-start">
+                        {/* Product Image - Thumbnail (70px max) */}
+                        <Link to={`/product/${product.id}`} className="w-[70px] h-[70px] bg-gray-200 rounded flex-shrink-0 flex items-center justify-center overflow-hidden hover:opacity-80 transition-opacity" style={{ maxWidth: '70px', maxHeight: '70px' }}>
+                          {productImage ? (
+                            <img src={productImage} alt={productName} className="w-full h-full object-contain" style={{ width: '70px', height: 'auto' }} />
+                          ) : (
+                            <span className="text-xs text-stone-400">No Image</span>
+                          )}
                         </Link>
-                        <p className="text-xs text-stone-600 mb-1 line-clamp-1">
-                          {product.description || ''}
-                        </p>
-                        
-                        {/* Quantity Controls - Ultra Compact */}
-                        <div className="flex items-center gap-1">
-                          <span className="text-xs text-stone-600">数量:</span>
-                          <div className="flex items-center gap-0.5 bg-stone-100 rounded">
+
+                        {/* Product Info and Controls - Center Section */}
+                        <div className="flex-1 min-w-0">
+                          <Link to={`/product/${product.id}`} className="font-bold text-xs text-stone-800 hover:text-mos-green line-clamp-2 block mb-0.5">
+                            {productName}
+                          </Link>
+                          <p className="text-xs text-stone-600 mb-1 line-clamp-1">
+                            {product.description || ''}
+                          </p>
+                          
+                          {/* Quantity Controls - Ultra Compact */}
+                          <div className="flex items-center gap-1">
+                            <span className="text-xs text-stone-600">数量:</span>
+                            <div className="flex items-center gap-0.5 bg-stone-100 rounded">
+                              <button
+                                onClick={() => updateQuantity(item.id, quantity - 1)}
+                                className="w-5 h-5 text-xs font-bold text-mos-green flex items-center justify-center hover:bg-green-200 transition-colors"
+                              >
+                                −
+                              </button>
+                              <span className="w-4 text-center text-xs font-semibold">{quantity}</span>
+                              <button
+                                onClick={() => updateQuantity(item.id, quantity + 1)}
+                                className="w-5 h-5 text-xs font-bold text-mos-green flex items-center justify-center hover:bg-green-200 transition-colors"
+                              >
+                                +
+                              </button>
+                            </div>
                             <button
-                              onClick={() => updateQuantity(item.id, quantity - 1)}
-                              className="w-5 h-5 text-xs font-bold text-mos-green flex items-center justify-center hover:bg-green-200 transition-colors"
+                              onClick={() => removeItem(item.id)}
+                              className="text-red-600 hover:text-red-700 text-lg leading-none ml-1"
                             >
-                              −
-                            </button>
-                            <span className="w-4 text-center text-xs font-semibold">{quantity}</span>
-                            <button
-                              onClick={() => updateQuantity(item.id, quantity + 1)}
-                              className="w-5 h-5 text-xs font-bold text-mos-green flex items-center justify-center hover:bg-green-200 transition-colors"
-                            >
-                              +
+                              ✕
                             </button>
                           </div>
-                          <button
-                            onClick={() => removeItem(item.id)}
-                            className="text-red-600 hover:text-red-700 text-lg leading-none ml-1"
-                          >
-                            ✕
-                          </button>
+                        </div>
+
+                        {/* Price - Right Side */}
+                        <div className="flex flex-col items-end gap-1 flex-shrink-0">
+                          <p className="text-sm font-bold text-mos-green whitespace-nowrap">
+                            ¥{productPrice.toLocaleString()}
+                          </p>
+                          <p className="text-xs text-stone-600 whitespace-nowrap">
+                            × {quantity}
+                          </p>
                         </div>
                       </div>
 
-                      {/* Price - Right Side */}
-                      <div className="flex flex-col items-end gap-1 flex-shrink-0">
-                        <p className="text-sm font-bold text-mos-green whitespace-nowrap">
-                          ¥{productPrice.toLocaleString()}
-                        </p>
-                        <p className="text-xs text-stone-600 whitespace-nowrap">
-                          × {quantity}
+                      {/* Subtotal Line */}
+                      <div className="mt-2 text-right border-t border-stone-100 pt-1.5">
+                        <p className="text-xs text-mos-green font-bold">
+                          計: ¥{(productPrice * quantity).toLocaleString()}
                         </p>
                       </div>
                     </div>
-
-                    {/* Subtotal Line */}
-                    <div className="mt-2 text-right border-t border-stone-100 pt-1.5">
-                      <p className="text-xs text-mos-green font-bold">
-                        計: ¥{(productPrice * quantity).toLocaleString()}
-                      </p>
-                    </div>
-                  </div>
+                    {index < cartItems.length - 1 && (
+                      <div className="border-t border-stone-300 my-1" aria-hidden="true" />
+                    )}
+                  </React.Fragment>
                 );
               })}
             </div>
