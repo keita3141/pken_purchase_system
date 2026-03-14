@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+    --global-header-height: 3.5rem;
+    --cart-header-height: 3rem;
+}
+
 /* Reset & Base Styles */
 * {
     box-sizing: border-box;
