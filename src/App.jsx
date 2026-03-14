@@ -21,6 +21,7 @@ function App() {
         <Header />
         {/* 開発環境でのみデバッグログを表示 */}
         <DebugLogger />
+        <main className="pt-14">
         <Routes>
           {/* 認証が必要なルート */}
           <Route
@@ -85,6 +86,7 @@ function App() {
             element={<LineCallback />}
           />
         </Routes>
+        </main>
       </AuthProvider>
     </Router>
   );
