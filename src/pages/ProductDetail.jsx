@@ -399,16 +399,16 @@ const ProductDetail = () => {
                     <div className="flex items-center gap-3">
                       <button
                         onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                        className="rounded-lg border-2 border-mos-green text-mos-green flex items-center justify-center hover:bg-green-50 transition-all duration-200 text-2xl font-bold active:scale-95"
-                        style={{ width: '56px', height: '56px' }}
+                        className="rounded-lg border-2 border-mos-green text-mos-green flex items-center justify-center hover:bg-green-50 transition-all duration-200 font-bold active:scale-95"
+                        style={{ width: '56px', height: '56px', fontSize: '32px', lineHeight: 1 }}
                       >
                         -
                       </button>
                       <span className="text-2xl font-bold text-stone-800 min-w-[4rem] text-center">{quantity}</span>
                       <button
                         onClick={() => setQuantity(quantity + 1)}
-                        className="rounded-lg border-2 border-mos-green text-mos-green flex items-center justify-center hover:bg-green-50 transition-all duration-200 text-2xl font-bold active:scale-95"
-                        style={{ width: '56px', height: '56px' }}
+                        className="rounded-lg border-2 border-mos-green text-mos-green flex items-center justify-center hover:bg-green-50 transition-all duration-200 font-bold active:scale-95"
+                        style={{ width: '56px', height: '56px', fontSize: '32px', lineHeight: 1 }}
                       >
                         +
                       </button>
