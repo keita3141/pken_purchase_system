@@ -140,9 +140,12 @@ const ProductList = () => {
         </h1>
 
         {/* 商品グリッド */}
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5" style={{ gap: '6px' }}>
+        <div 
+          className="product-grid" 
+          style={{ gap: '6px' }}
+        >
           {displayedProducts.length === 0 ? (
-            <p className="col-span-2 md:col-span-4 lg:col-span-5 text-center py-16 text-sm text-gray-400">
+            <p className="text-center py-16 text-sm text-gray-400" style={{ gridColumn: '1 / -1' }}>
               該当する商品が見つかりませんでした。
             </p>
           ) : (
