@@ -148,7 +148,7 @@ const ProductList = () => {
           ) : (
             displayedProducts.map(product => (
               <Link
-                to={`/products/${product.id}`}
+                to={`/product/${product.id}`}
                 key={product.id}
                 className="block bg-white"
                 style={{
