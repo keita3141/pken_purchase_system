@@ -180,18 +180,6 @@ const ProductList = () => {
 
 export default ProductList;
 
-// CSS in JS for multi-line truncate (can be moved to index.css)
-const style = document.createElement('style');
-style.innerHTML = `
-  .truncate-2-lines {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-`;
-document.head.appendChild(style);
 
     const fetchNews = async () => {
       try {
