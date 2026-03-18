@@ -12,6 +12,11 @@ export default {
           light: '#00a84d',
           dark: '#006b30',
         },
+        'accent': {
+          DEFAULT: '#FF5722', // 例：鮮やかなオレンジ
+          light: '#FF7043',
+          dark: '#E64A19',
+        },
       },
     },
   },

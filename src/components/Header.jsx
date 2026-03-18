@@ -81,11 +81,13 @@ const Header = () => {
           </div>
           
           {/* カートアイコン */}
-          <Link to="/cart" aria-label="カート画面へ" className="flex items-center gap-2 px-3 py-2 hover:bg-green-700 rounded transition-colors">
+          <Link to="/cart" aria-label="カート画面へ" className="relative flex items-center gap-2 px-3 py-2 hover:bg-green-700 rounded-full transition-colors">
             <span className="material-icons text-white text-2xl">shopping_cart</span>
-            <span className="bg-red-500 text-white text-sm px-2 py-0.5 rounded-full font-bold min-w-[24px] text-center">
-              {cartCount > 99 ? '99+' : cartCount}
-            </span>
+            {cartCount > 0 && (
+              <span className="absolute -top-1 -right-1 flex items-center justify-center bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5">
+                {cartCount > 99 ? '99+' : cartCount}
+              </span>
+            )}
           </Link>
         </div>
       </header>
