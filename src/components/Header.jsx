@@ -30,65 +30,106 @@ const Header = () => {
 
   return (
     <>
-      <header className="fixed top-0 left-0 w-full bg-green-600 shadow-md z-[100] flex items-center justify-between px-4 md:px-6 border-b border-green-700" style={{ backgroundColor: '#16a34a', height: '56px' }}>
-        {/* 左側：ロゴとナビゲーション */}
-        <div className="flex items-center gap-6">
-          {/* モバイルメニューボタン */}
+      <header
+        className="fixed top-0 left-0 w-full z-[100] flex items-center justify-between px-3"
+        style={{ backgroundColor: '#00873c', height: '56px', boxShadow: '0 2px 4px rgba(0,0,0,0.15)' }}
+      >
+        {/* 左側：ロゴ ＋ アイコン群 */}
+        <div className="flex items-center gap-1">
+          {/* ロゴ */}
+          <Link
+            to="/"
+            className="font-extrabold text-white text-lg tracking-tight mr-2"
+            style={{ letterSpacing: '-0.5px' }}
+          >
+            Mobile Order
+          </Link>
+
+          {/* ベルアイコン */}
           <button
-            className="md:hidden text-white text-2xl focus:outline-none"
+            className="flex items-center justify-center rounded-full text-white active:bg-green-700"
+            style={{ width: '40px', height: '40px' }}
+            aria-label="通知"
+          >
+            <span className="material-icons" style={{ fontSize: '22px' }}>notifications</span>
+          </button>
+
+          {/* ハンバーガーメニュー（モバイル） */}
+          <button
+            className="flex items-center justify-center rounded-full text-white active:bg-green-700 md:hidden"
+            style={{ width: '40px', height: '40px' }}
             aria-label="メニューを開く"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
-            <span className="material-icons">menu</span>
+            <span className="material-icons" style={{ fontSize: '22px' }}>menu</span>
           </button>
-          
-          {/* ロゴ */}
-          <Link to="/" className="text-white font-bold text-lg md:text-xl hover:text-green-100 transition-colors">
-            Mobile Order
-          </Link>
-          
+
           {/* デスクトップナビゲーション */}
-          <nav className="hidden md:flex items-center gap-1">
-            <Link 
-              to="/" 
-              className="px-4 py-2 text-white hover:bg-green-700 rounded transition-colors text-sm"
-            >
-              商品一覧
-            </Link>
-            <Link 
-              to="/news" 
-              className="px-4 py-2 text-white hover:bg-green-700 rounded transition-colors text-sm"
-            >
-              ニュース
-            </Link>
-            <Link 
-              to="/purchase-history" 
-              className="px-4 py-2 text-white hover:bg-green-700 rounded transition-colors text-sm"
-            >
-              購入履歴
-            </Link>
+          <nav className="hidden md:flex items-center gap-1 ml-2">
+            <Link to="/" className="px-3 py-2 text-white hover:bg-green-700 rounded text-sm">商品一覧</Link>
+            <Link to="/news" className="px-3 py-2 text-white hover:bg-green-700 rounded text-sm">ニュース</Link>
+            <Link to="/purchase-history" className="px-3 py-2 text-white hover:bg-green-700 rounded text-sm">購入履歴</Link>
           </nav>
         </div>
-        
-        {/* 右側：ユーザー情報とカート */}
-        <div className="flex items-center gap-3">
-          {/* ユーザー名表示（ログインなしは「ゲスト」と表示） */}
-          <div className="hidden md:flex items-center gap-2 bg-green-700 px-3 py-1.5 rounded hover:bg-green-800 transition-colors">
-            <span className="material-icons text-lg text-white">account_circle</span>
-            <span className="text-sm text-white font-medium">
-              {user ? (user.name || user.displayName || user.student_id || '名前未設定') : 'ゲスト'}
-            </span>
-          </div>
-          
+
+        {/* 右側：カート ＋ ログイン/ユーザーボタン */}
+        <div className="flex items-center gap-2">
           {/* カートアイコン */}
-          <Link to="/cart" aria-label="カート画面へ" className="relative flex items-center gap-2 px-3 py-2 hover:bg-green-700 rounded-full transition-colors">
-            <span className="material-icons text-white text-2xl">shopping_cart</span>
+          <Link
+            to="/cart"
+            aria-label="カート画面へ"
+            className="relative flex items-center justify-center text-white active:bg-green-700 rounded-full"
+            style={{ width: '40px', height: '40px' }}
+          >
+            <span className="material-icons" style={{ fontSize: '22px' }}>shopping_cart</span>
             {cartCount > 0 && (
-              <span className="absolute -top-1 -right-1 flex items-center justify-center bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5">
+              <span
+                className="absolute flex items-center justify-center bg-red-500 text-white font-bold rounded-full"
+                style={{ top: '4px', right: '4px', minWidth: '16px', height: '16px', fontSize: '9px', padding: '0 3px' }}
+              >
                 {cartCount > 99 ? '99+' : cartCount}
               </span>
             )}
           </Link>
+
+          {/* ログイン／ユーザーボタン（MOS Burgerスタイル：白背景・グリーン枠） */}
+          {user ? (
+            <button
+              onClick={handleLogout}
+              style={{
+                backgroundColor: '#fff',
+                color: '#00873c',
+                border: '1.5px solid #fff',
+                borderRadius: '4px',
+                padding: '5px 10px',
+                fontSize: '12px',
+                fontWeight: '700',
+                whiteSpace: 'nowrap',
+                minHeight: '32px',
+              }}
+            >
+              {user.name || user.displayName || user.student_id || 'ログアウト'}
+            </button>
+          ) : (
+            <Link
+              to="/login"
+              style={{
+                backgroundColor: '#fff',
+                color: '#00873c',
+                border: '1.5px solid #fff',
+                borderRadius: '4px',
+                padding: '5px 12px',
+                fontSize: '13px',
+                fontWeight: '700',
+                whiteSpace: 'nowrap',
+                minHeight: '32px',
+                display: 'flex',
+                alignItems: 'center',
+              }}
+            >
+              ログイン
+            </Link>
+          )}
         </div>
       </header>
 
