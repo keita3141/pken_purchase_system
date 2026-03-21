@@ -406,13 +406,17 @@ const ProductDetail = () => {
                       </button>
                       <span className="text-2xl font-bold text-stone-800 min-w-[4rem] text-center">{quantity}</span>
                       <button
-                        onClick={() => setQuantity(quantity + 1)}
-                        className="rounded-lg border-2 border-mos-green text-mos-green flex items-center justify-center hover:bg-green-50 transition-all duration-200 font-bold active:scale-95"
+                        onClick={() => setQuantity(Math.min(product.stock || 999, quantity + 1))}
+                        disabled={quantity >= (product.stock || 999)}
+                        className="rounded-lg border-2 border-mos-green text-mos-green flex items-center justify-center hover:bg-green-50 transition-all duration-200 font-bold active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-50"
                         style={{ width: '56px', height: '56px', fontSize: '32px', lineHeight: 1 }}
                       >
                         +
                       </button>
                     </div>
+                    {product.stock && (
+                      <p className="text-xs text-stone-500 mt-1">在庫数: {product.stock}個</p>
+                    )}
                   </div>
 
                   <div className="mt-auto">

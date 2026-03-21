@@ -288,8 +288,9 @@ const Cart = () => {
                               </button>
                               <span className="w-6 text-center text-sm font-semibold">{quantity}</span>
                               <button
-                                onClick={() => updateQuantity(item.id, quantity + 1)}
-                                className="w-8 h-8 text-base font-bold text-mos-green flex items-center justify-center hover:bg-green-200 active:bg-green-300 transition-colors rounded-r"
+                                onClick={() => updateQuantity(item.id, Math.min(product.stock || 999, quantity + 1))}
+                                disabled={quantity >= (product.stock || 999)}
+                                className="w-8 h-8 text-base font-bold text-mos-green flex items-center justify-center hover:bg-green-200 active:bg-green-300 transition-colors rounded-r disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-200"
                               >
                                 +
                               </button>
@@ -301,6 +302,9 @@ const Cart = () => {
                               ✕
                             </button>
                           </div>
+                          {product.stock && (
+                            <p className="text-xs text-stone-500 mt-0.5">在庫: {product.stock}個</p>
+                          )}
                         </div>
 
                         {/* Price - Right Side */}
