@@ -305,11 +305,11 @@ const ProductDetail = () => {
                           <span className="text-sm">画像なし</span>
                         </div>
                       )}
-                    </div>
                   </div>
                 </div>
+              </div>
 
-                {/* Content Section - 右側（PC時） */}
+              {/* Content Section - 右側（PC時） */}
                 <div className="w-full md:w-1/2 md:flex-shrink-0 flex flex-col justify-center min-w-0">
                   {/* 商品名とラベル */}
                   <div className="mb-4">
