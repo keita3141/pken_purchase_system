@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
@@ -8,20 +8,20 @@ const PurchaseHistory = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const hasFetchedRef = useRef(false); // 一度だけ実行するためのフラグ
+  const location = useLocation();
   
   // 認証状態を取得
   const { loading: authLoading, user } = useAuth();
 
   useEffect(() => {
-    // ガード節: 認証が完了し、user が存在し、まだフェッチしていない場合のみ実行
-    if (authLoading || !user || hasFetchedRef.current) {
+    // ガード節: 認証が完了し、user が存在する場合のみ実行
+    if (authLoading || !user) {
       return;
     }
 
-    hasFetchedRef.current = true; // 実行フラグを立てる
     fetchPurchaseHistory();
-  }, [authLoading, user]);
+    // location.pathname が変わるたびにフェッチ（ページ訪問時）
+  }, [authLoading, user, location.pathname]);
 
   const fetchPurchaseHistory = async () => {
     try {
