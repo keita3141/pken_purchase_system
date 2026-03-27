@@ -72,12 +72,21 @@ const PurchaseHistory = () => {
       }
 
       // APIレスポンスの構造に応じて調整
+      let ordersData = [];
       if (data.success && Array.isArray(data.data)) {
-        setOrders(data.data);
+        ordersData = data.data;
+      } else if (Array.isArray(data.data)) {
+        ordersData = data.data;
+      } else if (Array.isArray(data.orders)) {
+        ordersData = data.orders;
       } else if (Array.isArray(data)) {
-        setOrders(data);
+        ordersData = data;
       } else {
-        setOrders([]);
+        ordersData = [];
+      }
+      
+      console.log('セットする注文データ:', ordersData);
+      setOrders(ordersData);
       }
     } catch (err) {
       console.error('Purchase history fetch error:', String(err));

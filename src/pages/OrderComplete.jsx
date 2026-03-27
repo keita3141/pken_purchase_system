@@ -11,7 +11,7 @@ const OrderComplete = () => {
   const [orderData, setOrderData] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const { user, isAuthenticated, loading: authLoading } = useAuth();
+  const { user, isAuthenticated, loading: authLoading, fetchCartCount } = useAuth();
 
   useEffect(() => {
     if (authLoading) {
@@ -32,7 +32,10 @@ const OrderComplete = () => {
 
     setOrderId(id);
     fetchOrderDetails(id);
-  }, [authLoading, isAuthenticated, user, searchParams, navigate]);
+    
+    // カート数を更新
+    fetchCartCount();
+  }, [authLoading, isAuthenticated, user, searchParams, navigate, fetchCartCount]);
 
   const fetchOrderDetails = async (id) => {
     try {

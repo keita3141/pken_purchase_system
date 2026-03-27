@@ -11,7 +11,7 @@ const Checkout = () => {
   const [paymentMethod, setPaymentMethod] = useState('credit_card');
   const [isProcessing, setIsProcessing] = useState(false);
   const navigate = useNavigate();
-  const { user, isAuthenticated, loading: authLoading } = useAuth();
+  const { user, isAuthenticated, loading: authLoading, fetchCartCount } = useAuth();
 
   useEffect(() => {
     if (authLoading) {
@@ -131,6 +131,24 @@ const Checkout = () => {
       }
 
       console.log('注文完了:', data);
+
+      // 注文成功後、カートをクリア
+      try {
+        const clearToken = localStorage.getItem('authToken');
+        if (clearToken) {
+          await fetch(`${API_BASE_URL}/api/cart`, {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${clearToken}`,
+            },
+          });
+          // カート数を更新
+          await fetchCartCount();
+        }
+      } catch (clearErr) {
+        console.warn('カート削除エラー（処理は継続）:', clearErr);
+      }
 
       // 注文完了画面へ遷移（注文番号をパラメータで渡す）
       const orderId = data.data?.id || data.order_id || Math.random().toString(36).substr(2, 9);
