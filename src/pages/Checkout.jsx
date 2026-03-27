@@ -97,16 +97,14 @@ const Checkout = () => {
         return;
       }
 
-      // 注文データを構築
+      // 注文データを構築（バックエンド仕様に準拠）
+      // items: product_id と quantity のみ
+      // 合計金額はサーバー側で計算
       const orderData = {
         items: cartItems.map(item => ({
           product_id: item.product?.id || item.id,
           quantity: item.quantity || 1,
-          price: item.product?.price || item.price || 0,
         })),
-        total_amount: getTotalPrice(),
-        payment_method: paymentMethod,
-        user_id: user?.id,
       };
 
       console.log('注文データを送信:', orderData);
