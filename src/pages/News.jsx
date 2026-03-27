@@ -64,16 +64,16 @@ const News = () => {
   return (
     <div className="min-h-screen bg-stone-50 pt-6">
       {/* Main Content */}
-      <main className="main-content min-h-screen pb-20">
+      <main className="main-content min-h-screen pb-20 w-full flex flex-col items-center">
         <div className="w-full max-w-4xl mx-auto px-2 md:px-4 lg:px-6">
           <div className="mb-8">
-            <h1 className="page-title text-3xl font-bold text-stone-800">ニュース</h1>
-            <p className="text-stone-600 mt-2">最新のお知らせやニュースをお伝えします</p>
+            <h1 className="page-title text-3xl md:text-4xl lg:text-5xl font-bold text-stone-800">ニュース</h1>
+            <p className="text-stone-600 mt-2 text-base md:text-lg lg:text-xl">最新のお知らせやニュースをお伝えします</p>
           </div>
 
           {newsList.length === 0 ? (
             <div className="text-center py-16">
-              <p className="text-stone-600 mb-4">ニュースはありません</p>
+              <p className="text-stone-600 mb-4 text-base md:text-lg lg:text-xl">ニュースはありません</p>
               <Link to="/" className="link-text">ホームに戻る</Link>
             </div>
           ) : (
@@ -82,8 +82,8 @@ const News = () => {
                 <details key={newsItem.id} className="accordion-item bg-white border-b border-stone-200">
                   <summary className="flex items-center justify-between p-4 md:p-6 cursor-pointer hover:bg-stone-50 transition-colors focus:outline-none">
                     <div className="flex items-start gap-3 flex-1">
-                      <span className="font-bold text-mos-green text-lg md:text-xl flex-shrink-0 pt-0.5">Q</span>
-                      <h2 className="text-base md:text-lg font-bold text-stone-800 leading-relaxed">
+                      <span className="font-bold text-mos-green text-lg md:text-xl lg:text-2xl flex-shrink-0 pt-0.5">Q</span>
+                      <h2 className="text-base md:text-lg lg:text-xl font-bold text-stone-800 leading-relaxed">
                         {newsItem.title}
                       </h2>
                     </div>
@@ -93,7 +93,7 @@ const News = () => {
                       </span>
                     )}
                     {/* Toggle Icon */}
-                    <span className="toggle-icon text-mos-green font-bold text-xl md:text-2xl ml-2 flex-shrink-0 transition-transform duration-300">
+                    <span className="toggle-icon text-mos-green font-bold text-xl md:text-2xl lg:text-3xl ml-2 flex-shrink-0 transition-transform duration-300">
                       +
                     </span>
                   </summary>
@@ -101,12 +101,12 @@ const News = () => {
                   {/* Content */}
                   <div className="bg-gray-100 p-4 md:p-6 border-t border-stone-200">
                     <div className="flex gap-3">
-                      <span className="font-bold text-orange-500 text-lg md:text-xl flex-shrink-0">A</span>
+                      <span className="font-bold text-orange-500 text-lg md:text-xl lg:text-2xl flex-shrink-0">A</span>
                       <div className="flex-1">
-                        <div className="text-xs md:text-sm text-stone-500 mb-3">
+                        <div className="text-xs md:text-sm lg:text-base text-stone-500 mb-3">
                           {formatDate(newsItem.created_at)}
                         </div>
-                        <p className="text-stone-700 text-sm md:text-base leading-relaxed whitespace-pre-wrap">
+                        <p className="text-stone-700 text-sm md:text-base lg:text-lg leading-relaxed whitespace-pre-wrap">
                           {newsItem.content}
                         </p>
                       </div>
