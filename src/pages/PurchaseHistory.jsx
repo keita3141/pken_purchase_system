@@ -87,7 +87,6 @@ const PurchaseHistory = () => {
       
       console.log('セットする注文データ:', ordersData);
       setOrders(ordersData);
-      }
     } catch (err) {
       console.error('Purchase history fetch error:', String(err));
       console.error('エラーメッセージ:', err.message || 'メッセージなし');
