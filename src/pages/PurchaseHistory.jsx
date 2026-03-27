@@ -71,15 +71,19 @@ const PurchaseHistory = () => {
         throw new Error(errorMsg);
       }
 
-      // APIレスポンスの構造に応じて調整
+      // APIレスポンスの構造に応じて調整（多段構造: data.data.data）
       let ordersData = [];
-      if (data.success && Array.isArray(data.data)) {
+      if (data.success && data.data && Array.isArray(data.data.data)) {
+        // 標準形式: { success: true, data: { data: [...] } }
+        ordersData = data.data.data;
+      } else if (data.data && Array.isArray(data.data.data)) {
+        // data.data.data が配列
+        ordersData = data.data.data;
+      } else if (data.data && Array.isArray(data.data)) {
+        // data.data が配列（ページネーション含まない）
         ordersData = data.data;
-      } else if (Array.isArray(data.data)) {
-        ordersData = data.data;
-      } else if (Array.isArray(data.orders)) {
-        ordersData = data.orders;
       } else if (Array.isArray(data)) {
+        // データが直接配列
         ordersData = data;
       } else {
         ordersData = [];
@@ -147,33 +151,36 @@ const PurchaseHistory = () => {
                   <div className="text-right">
                     <p className="text-sm text-stone-600">ステータス</p>
                     <span className={`inline-block px-3 py-1 rounded-full text-sm font-semibold ${
-                      order.status === 'completed' ? 'bg-green-100 text-green-800' :
-                      order.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                      order.status === 'cancelled' ? 'bg-red-100 text-red-800' :
+                      order.status === '完了' ? 'bg-green-100 text-green-800' :
+                      order.status === '受渡済' ? 'bg-blue-100 text-blue-800' :
+                      order.status === '調理中' ? 'bg-yellow-100 text-yellow-800' :
                       'bg-gray-100 text-gray-800'
                     }`}>
-                      {order.status === 'completed' ? '完了' :
-                       order.status === 'pending' ? '処理中' :
-                       order.status === 'cancelled' ? 'キャンセル' :
-                       order.status}
+                      {order.status || 'ステータス不明'}
                     </span>
                   </div>
                 </div>
 
                 {/* 注文商品一覧 */}
-                {order.items && order.items.length > 0 && (
+                {order.details && order.details.length > 0 && (
                   <div className="border-t border-stone-200 pt-4">
-                    {order.items.map((item, index) => (
-                      <div key={index} className="flex justify-between items-center py-2">
-                        <div className="flex-1">
-                          <p className="font-semibold text-stone-800">{item.product_name}</p>
-                          <p className="text-sm text-stone-600">数量: {item.quantity}</p>
+                    {order.details.map((detail, index) => {
+                      const product = detail.product || {};
+                      const productName = product.name || '商品名不明';
+                      const productPrice = product.price || detail.price || 0;
+                      const quantity = detail.quantity || 1;
+                      return (
+                        <div key={detail.id || index} className="flex justify-between items-center py-2">
+                          <div className="flex-1">
+                            <p className="font-semibold text-stone-800">{productName}</p>
+                            <p className="text-sm text-stone-600">数量: {quantity}</p>
+                          </div>
+                          <p className="font-semibold text-stone-800">
+                            ¥{(productPrice * quantity).toLocaleString()}
+                          </p>
                         </div>
-                        <p className="font-semibold text-stone-800">
-                          ¥{(item.price * item.quantity).toLocaleString()}
-                        </p>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 )}
 
@@ -182,7 +189,7 @@ const PurchaseHistory = () => {
                   <div className="flex justify-between items-center">
                     <p className="text-lg font-bold text-stone-800">合計</p>
                     <p className="text-xl font-bold text-stone-800">
-                      ¥{order.total_amount ? order.total_amount.toLocaleString() : '0'}
+                      ¥{order.total_price ? order.total_price.toLocaleString() : '0'}
                     </p>
                   </div>
                 </div>
