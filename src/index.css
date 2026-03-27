@@ -348,6 +348,39 @@ img {
     padding: 0.75rem;
     border: 1px solid #d1d5db;
     border-radius: 0.5rem;
+}
+
+/* Accordion (News/FAQ) */
+.accordion-item {
+    background-color: #ffffff;
+}
+
+.accordion-item details > summary {
+    list-style: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.accordion-item details > summary::-webkit-details-marker {
+    display: none;
+}
+
+.accordion-item summary:focus {
+    outline: none;
+}
+
+.accordion-item summary:focus-visible {
+    outline: 2px solid #00873c;
+    outline-offset: 2px;
+}
+
+.accordion-item .toggle-icon {
+    display: inline-block;
+}
+
+.accordion-item details[open] .toggle-icon {
+    transform: rotate(45deg);
+}
     font-size: 1rem;
 }
 
