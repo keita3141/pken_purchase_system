@@ -26,8 +26,9 @@ export const AuthProvider = ({ children }) => {
   // カートアイテム数を取得
   const fetchCartCount = async () => {
     try {
+      // ガード節: user が null またはトークンが存在しない場合はスキップ
       const token = localStorage.getItem('authToken');
-      if (!token) {
+      if (!token || !user) {
         setCartCount(0);
         return;
       }

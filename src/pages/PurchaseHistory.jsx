@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
 
@@ -7,13 +8,22 @@ const PurchaseHistory = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  
+  // 認証状態を取得
+  const { loading: authLoading, user } = useAuth();
 
   useEffect(() => {
     fetchPurchaseHistory();
-  }, []);
+  }, [authLoading, user]);
 
   const fetchPurchaseHistory = async () => {
     try {
+      // ガード節: 認証が完了し、user が存在するまで API をコールしない
+      if (authLoading || !user) {
+        setLoading(false);
+        return;
+      }
+
       const token = localStorage.getItem('authToken');
       if (!token) {
         setError('購入履歴を表示するにはログインが必要です');

@@ -11,7 +11,7 @@ const ProductDetail = () => {
   console.log('📝 Product ID from params:', id);
   
   const navigate = useNavigate();
-  const { fetchCartCount } = useAuth();
+  const { fetchCartCount, loading: authLoading, user } = useAuth();
   console.log('✅ Hooks initialized');
   
   const [product, setProduct] = useState(null);
@@ -58,6 +58,12 @@ const ProductDetail = () => {
   };
 
   useEffect(() => {
+    // ガード節: 認証が完了するまで待機（authLoading が false && user が存在するまで）
+    if (authLoading || !user) {
+      setLoading(false);
+      return;
+    }
+
     const fetchProductDetail = async () => {
       try {
         // 認証トークンを取得
@@ -168,7 +174,7 @@ const ProductDetail = () => {
     
     // 商品が変わったら数量を1にリセット
     setQuantity(1);
-  }, [id]);
+  }, [id, authLoading, user]);
 
   const handleAddToCart = async () => {
     setAddingToCart(true);

@@ -1,6 +1,7 @@
 ﻿import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
 
 const PLACEHOLDER_IMAGE = '/no-image.png';
 
@@ -21,6 +22,9 @@ const ProductList = () => {
   const [error, setError] = useState(null);
   const [activeCategory, setActiveCategory] = useState('すべて');
   const categoryBarRef = useRef(null);
+  
+  // 認証状態を取得
+  const { loading: authLoading, user } = useAuth();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -62,8 +66,14 @@ const ProductList = () => {
       }
     };
 
+    // ガード節: 認証が完了し、user が存在するまで API をコールしない
+    if (authLoading || !user) {
+      setLoading(false);
+      return;
+    }
+
     fetchProducts();
-  }, []);
+  }, [authLoading, user]);
 
   // カテゴリ一覧（重複排除）
   const categories = useMemo(() => {
