@@ -257,7 +257,7 @@ const Cart = () => {
                       {/* Top Row: Image + Product Info + Price */}
                       <div className="flex gap-2 md:gap-4 items-start">
                         {/* Product Image - Thumbnail (70px → md:128px) */}
-                        <Link to={`/product/${product.id}`} className="w-[70px] h-[70px] md:w-32 md:h-32 bg-gray-200 rounded flex-shrink-0 flex items-center justify-center overflow-hidden hover:opacity-80 transition-opacity" style={{ maxWidth: '70px', maxHeight: '70px' }}>
+                        <Link to={`/products/${product.id}`} className="w-[70px] h-[70px] md:w-32 md:h-32 bg-gray-200 rounded flex-shrink-0 flex items-center justify-center overflow-hidden hover:opacity-80 transition-opacity" style={{ maxWidth: '70px', maxHeight: '70px' }}>
                           {productImage ? (
                             <img src={productImage} alt={productName} className="w-full h-full object-contain" style={{ width: '70px', height: 'auto' }} />
                           ) : (
@@ -267,7 +267,7 @@ const Cart = () => {
 
                         {/* Product Info and Controls - Center Section */}
                         <div className="flex-1 min-w-0">
-                          <Link to={`/product/${product.id}`} className="font-bold text-xs md:text-base text-stone-800 hover:text-mos-green line-clamp-2 block mb-0.5 md:mb-1">
+                          <Link to={`/products/${product.id}`} className="font-bold text-xs md:text-base text-stone-800 hover:text-mos-green line-clamp-2 block mb-0.5 md:mb-1">
                             {productName}
                           </Link>
                           <p className="text-xs md:text-sm text-stone-600 mb-1 md:mb-2 line-clamp-1">
