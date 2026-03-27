@@ -332,7 +332,7 @@ const Cart = () => {
 
               <button
                 className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 md:py-3 px-3 md:px-4 rounded text-xs md:text-base transition-all mb-1.5 md:mb-2"
-                onClick={() => alert('購入機能はまだ実装されていません')}
+                onClick={() => navigate('/checkout')}
               >
                 注文を行う
               </button>

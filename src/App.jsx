@@ -10,6 +10,8 @@ import LineCallback from './pages/LineCallback';
 import ProductList from './pages/ProductList';
 import ProductDetail from './pages/ProductDetail';
 import Cart from './pages/Cart';
+import Checkout from './pages/Checkout';
+import OrderComplete from './pages/OrderComplete';
 import PurchaseHistory from './pages/PurchaseHistory';
 import News from './pages/News';
 import './App.css';
@@ -45,6 +47,22 @@ function App() {
             element={
               <ProtectedRoute>
                 <Cart />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/checkout"
+            element={
+              <ProtectedRoute>
+                <Checkout />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/order-complete"
+            element={
+              <ProtectedRoute>
+                <OrderComplete />
               </ProtectedRoute>
             }
           />
