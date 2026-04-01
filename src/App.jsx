@@ -94,19 +94,11 @@ function App() {
           {/* 公開ルート（認証不要） */}
           <Route
             path="/register"
-            element={
-              <ProtectedRoute>
-                <Register />
-              </ProtectedRoute>
-            }
+            element={<Register />}
           />
           <Route
             path="/login"
-            element={
-              <ProtectedRoute>
-                <Login />
-              </ProtectedRoute>
-            }
+            element={<Login />}
           />
           <Route
             path="/auth/callback"
