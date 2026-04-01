@@ -7,6 +7,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://komapay.p-kmt
 const Register = () => {
   const [name2nd, setName2nd] = useState('');
   const [name1st, setName1st] = useState('');
+  const [studentId, setStudentId] = useState('');
   const [lineId, setLineId] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -47,6 +48,7 @@ const Register = () => {
       const requestData = {
         name_2nd: name2nd,
         name_1st: name1st,
+        student_id: studentId,
         line_id: lineId,
       };
 
@@ -164,6 +166,19 @@ const Register = () => {
                 required
                 value={name1st}
                 onChange={(e) => setName1st(e.target.value)}
+              />
+            </div>
+
+            <div className="form-group">
+              <label className="form-label" htmlFor="student_id">学籍番号</label>
+              <input
+                id="student_id"
+                type="text"
+                className="form-input"
+                placeholder="例：S12345678"
+                required
+                value={studentId}
+                onChange={(e) => setStudentId(e.target.value)}
               />
             </div>
 

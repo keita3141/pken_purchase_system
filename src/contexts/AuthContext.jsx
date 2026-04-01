@@ -82,7 +82,8 @@ export const AuthProvider = ({ children }) => {
       
       if (!liffId) {
         console.warn('LIFF IDが設定されていません。開発モードで続行します。');
-        // 開発モードではLIFFなしで続行
+        // 開発モードでも、保存されたトークンとユーザー情報を復元する
+        await restoreAuthenticationFromStorage();
         setLoading(false);
         return;
       }
@@ -104,6 +105,43 @@ export const AuthProvider = ({ children }) => {
       console.error('LIFF初期化失敗:', error);
       console.error('エラー詳細:', error.message, error.stack);
       setLoading(false);
+    }
+  };
+
+  const restoreAuthenticationFromStorage = async () => {
+    try {
+      console.log('ストレージから認証情報を復元中...');
+      const token = localStorage.getItem('authToken');
+      const storedUser = sessionStorage.getItem('user');
+
+      if (token && storedUser) {
+        console.log('保存された認証情報を使用');
+        try {
+          const parsedUser = JSON.parse(storedUser);
+          const normalizedUser = {
+            ...parsedUser,
+            displayName: parsedUser.displayName || parsedUser.display_name || parsedUser.name || parsedUser.student_id || 'ゲスト',
+            lineId: parsedUser.lineId || parsedUser.line_id,
+          };
+          console.log('✅ Restored user from storage:', { id: normalizedUser.id, displayName: normalizedUser.displayName });
+          setUser(normalizedUser);
+          setIsAuthenticated(true);
+          setHasApiToken(true);
+          return;
+        } catch (e) {
+          console.warn('保存されたユーザー情報のパースに失敗:', e);
+        }
+      }
+
+      console.log('ストレージに認証情報がありません');
+      setUser(null);
+      setIsAuthenticated(false);
+      setHasApiToken(false);
+    } catch (error) {
+      console.error('ストレージから認証情報を復元中にエラー:', error);
+      setUser(null);
+      setIsAuthenticated(false);
+      setHasApiToken(false);
     }
   };
 
