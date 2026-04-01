@@ -52,6 +52,10 @@ const Login = () => {
         lineId = profile.userId;
       }
 
+      console.log('=== ログインリクエスト送信 ===');
+      console.log('URL:', `${API_BASE_URL}/api/auth/login`);
+      console.log('送信データ:', { student_id: studentId, password: '***', line_id: lineId });
+
       const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
         method: 'POST',
         headers: {
@@ -64,21 +68,28 @@ const Login = () => {
         }),
       });
 
+      console.log('レスポンスステータス:', response.status);
+      console.log('レスポンスOK:', response.ok);
+
       // Content-Typeをチェック
       const contentType = response.headers.get('content-type');
+      console.log('Content-Type:', contentType);
       let data;
       
       if (contentType && contentType.includes('application/json')) {
         data = await response.json();
+        console.log('レスポンスデータ:', data);
       } else {
         // JSONでない場合（HTMLなど）
         const text = await response.text();
-        console.error('Non-JSON response:', text.substring(0, 200));
+        console.error('Non-JSON response (最初の500文字):', text.substring(0, 500));
         throw new Error(`サーバーエラー: APIが正しく応答していません (Status: ${response.status})`);
       }
 
       if (!response.ok) {
-        throw new Error(data.message || 'ログインに失敗しました');
+        console.error('ログイン失敗レスポンス:', data);
+        const errorMessage = data.message || data.error || `ログインに失敗しました (Status: ${response.status})`;
+        throw new Error(errorMessage);
       }
 
       // 認証コンテキストにログイン
@@ -101,6 +112,12 @@ const Login = () => {
       navigate('/');
     } catch (err) {
       console.error('Login error:', err);
+      console.error('エラー詳細:', {
+        message: err.message,
+        stack: err.stack,
+        name: err.name,
+        fullError: err
+      });
       setError(err.message || 'ログイン中にエラーが発生しました');
     } finally {
       setLoading(false);
