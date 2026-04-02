@@ -64,7 +64,7 @@ const NewsDetail = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex justify-center items-center bg-stone-50 pt-20">
+      <div className="min-h-screen flex justify-center items-center bg-stone-50 pt-20 px-8">
         <p className="text-stone-600">読み込み中...</p>
       </div>
     );
@@ -74,7 +74,7 @@ const NewsDetail = () => {
     return (
       <div className="min-h-screen bg-stone-50 pt-20">
         <main className="main-content min-h-screen pb-20 w-full flex flex-col items-center">
-          <div className="w-full max-w-3xl mx-auto px-6 md:px-8 lg:px-10">
+          <div className="w-full max-w-3xl mx-auto px-8 md:px-12 lg:px-16">
             <div className="text-center py-12">
               <p className="text-red-500 mb-6 text-base md:text-lg">
                 {error || 'ニュースが見つかりません'}
@@ -95,7 +95,7 @@ const NewsDetail = () => {
   return (
     <div className="min-h-screen bg-stone-50 pt-20">
       <main className="main-content pb-20 w-full flex flex-col items-center">
-        <article className="w-full max-w-3xl mx-auto px-6 md:px-8 lg:px-10">
+        <article className="w-full max-w-3xl mx-auto px-8 md:px-12 lg:px-16">
           {/* Back Button */}
           <div className="mb-8">
             <Link
