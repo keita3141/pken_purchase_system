@@ -354,12 +354,12 @@ const ProductDetail = () => {
                 
                 {/* 商品名とラベル */}
                 <div className="mb-6">
-                  <div className="flex flex-wrap items-start gap-3 mb-3">
+                  <div className="flex flex-wrap items-center gap-4 mb-3">
                     <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-stone-900 leading-tight">
                       {String(product.name)}
                     </h1>
                     {labelText && (
-                      <span className="text-xs md:text-sm font-bold text-white bg-mos-green px-4 py-2 rounded-full shadow-md whitespace-nowrap mt-1">
+                      <span className="text-sm md:text-base font-bold text-white bg-mos-green px-5 py-2.5 rounded-full shadow-md whitespace-nowrap">
                         {labelText}
                       </span>
                     )}
