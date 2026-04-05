@@ -2,11 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
-<<<<<<< HEAD
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
-=======
 const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/$/, '');
->>>>>>> 2aeeb753c7297fc14f5e031472a8209f08d9964f
 
 const Register = () => {
   const [name2nd, setName2nd] = useState('');
