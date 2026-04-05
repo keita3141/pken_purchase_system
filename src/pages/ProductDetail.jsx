@@ -22,7 +22,11 @@ const ProductDetail = () => {
   const [quantity, setQuantity] = useState(1);
   console.log('✅ State initialized');
 
-  const hasDisplayValue = (value) => typeof value === 'string' && value.trim() !== '' && value.trim() !== '未入力';
+  const hasDisplayValue = (value) => {
+    if (typeof value !== 'string') return false;
+    const trimmed = value.trim();
+    return trimmed !== '' && trimmed !== '未入力' && trimmed !== '未設定';
+  };
 
   const getVendorDisplayName = (productData) => {
     if (hasDisplayValue(productData?.vendor_name)) {
