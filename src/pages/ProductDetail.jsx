@@ -434,14 +434,14 @@ const ProductDetail = () => {
                   </button>
                 </div>
 
-                {/* アレルゲン情報 - 改善版 */}
+                {/* アレルギー情報 - 改善版 */}
                 {allergensList.length > 0 && (
                   <div className="pt-8 border-t-4 border-amber-300">
                     <h3 className="font-black text-amber-900 mb-4 text-lg md:text-xl flex items-center gap-2">
                       <svg className="w-5 h-5 md:w-6 md:h-6" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z" />
                       </svg>
-                      アレルゲン情報
+                      アレルギー情報
                     </h3>
                     <div className="flex flex-wrap gap-3">
                       {allergensList.map((allergen, index) => (
