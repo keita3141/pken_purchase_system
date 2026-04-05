@@ -118,6 +118,7 @@ const ProductDetail = () => {
         
         console.log('✅ Valid product:', { id: productData.id, name: productData.name });
         console.log('Product data (full):', JSON.stringify(productData, null, 2).substring(0, 500));
+        console.log('Raw description:', JSON.stringify(productData.description));
         setProduct(productData);
         
         // 関連商品の取得
@@ -288,7 +289,13 @@ const ProductDetail = () => {
   const categoryDisplayName = getCategoryDisplayName(product);
   const allergensList = getAllergensList(product.allergens);
   const labelText = getLabelText(product.label);
-  const descriptionText = hasDisplayValue(product.description) ? product.description.trim().replace(/^[\{\【「『※*\s]+/, '') : '';
+  const descriptionText = hasDisplayValue(product.description) ? 
+    product.description
+      .trim()
+      .replace(/^[\{\}【】「」『』※\*\s]+/, '')  // 先頭の括弧や記号を削除
+      .replace(/^\(.*?\)/, '')  // 先頭の括弧で囲まれたコンテンツを削除
+      .trim()
+    : '';
   
   // 在庫警告色の判定
   const getStockColor = () => {
@@ -368,7 +375,7 @@ const ProductDetail = () => {
                 {/* 商品説明 */}
                 {descriptionText && (
                   <div className="mb-8">
-                    <p className="text-sm md:text-base text-stone-600 leading-relaxed bg-stone-50 p-4 rounded-lg border-l-4 border-mos-green">
+                    <p className="text-sm md:text-base text-stone-600 leading-relaxed bg-stone-50 p-4 rounded-lg border-l-4 border-mos-green overflow-hidden">
                       {descriptionText}
                     </p>
                   </div>
