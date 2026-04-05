@@ -289,13 +289,7 @@ const ProductDetail = () => {
   const categoryDisplayName = getCategoryDisplayName(product);
   const allergensList = getAllergensList(product.allergens);
   const labelText = getLabelText(product.label);
-  const descriptionText = hasDisplayValue(product.description) ? 
-    product.description
-      .trim()
-      .replace(/^[\{\}【】「」『』※\*\s]+/, '')  // 先頭の括弧や記号を削除
-      .replace(/^\(.*?\)/, '')  // 先頭の括弧で囲まれたコンテンツを削除
-      .trim()
-    : '';
+  const descriptionText = hasDisplayValue(product.description) ? product.description.trim() : '';
   
   // 在庫警告色の判定
   const getStockColor = () => {
@@ -375,7 +369,7 @@ const ProductDetail = () => {
                 {/* 商品説明 */}
                 {descriptionText && (
                   <div className="mb-8">
-                    <p className="text-sm md:text-base text-stone-600 leading-relaxed bg-stone-50 p-4 rounded-lg border-l-4 border-mos-green overflow-hidden">
+                    <p className="text-sm md:text-base text-stone-600 leading-relaxed bg-stone-50 p-5 rounded-xl border border-stone-200">
                       {descriptionText}
                     </p>
                   </div>
