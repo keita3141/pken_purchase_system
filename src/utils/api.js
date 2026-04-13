@@ -13,6 +13,7 @@ export const checkUserByLineId = async (lineId) => {
       headers: {
         'Content-Type': 'application/json',
       },
+      credentials: 'include',
       body: JSON.stringify({ line_id: lineId }),
     });
 
@@ -39,6 +40,7 @@ export const registerUser = async (userData) => {
       headers: {
         'Content-Type': 'application/json',
       },
+      credentials: 'include',
       body: JSON.stringify(userData),
     });
 
@@ -65,6 +67,7 @@ export const loginUser = async (credentials) => {
       headers: {
         'Content-Type': 'application/json',
       },
+      credentials: 'include',
       body: JSON.stringify(credentials),
     });
 

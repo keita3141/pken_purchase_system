@@ -61,11 +61,14 @@ const Login = () => {
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include', // クッキー送信（セッション維持対応）
         body: JSON.stringify({
           student_id: studentId,
           password: password,
           line_id: lineId, // LINE IDも送信
         }),
+        // リダイレクト時にメソッドを保持するため、手動リダイレクト処理の対応
+        // redirect: 'manual' // 必要に応じて有効化
       });
 
       console.log('レスポンスステータス:', response.status);
