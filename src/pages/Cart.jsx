@@ -98,10 +98,10 @@ const Cart = () => {
       if (!token) return;
       
       const url = `${API_BASE_URL}/api/cart/${itemId}`;
-      console.log('📦 カート更新リクエスト:', { url, method: 'POST', itemId, newQuantity });
+      console.log('📦 カート更新リクエスト:', { url, method: 'PUT', itemId, newQuantity });
       
       const response = await fetch(url, {
-        method: 'POST',
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
@@ -132,14 +132,18 @@ const Cart = () => {
       const token = localStorage.getItem('authToken');
       if (!token) return;
       
-      const response = await fetch(`${API_BASE_URL}/api/cart/${itemId}`, {
-        method: 'POST',
+      const url = `${API_BASE_URL}/api/cart/${itemId}`;
+      console.log('🗑️ カート削除リクエスト:', { url, method: 'DELETE', itemId });
+      
+      const response = await fetch(url, {
+        method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
         },
-        body: JSON.stringify({ _method: 'DELETE' }),
       });
+
+      console.log('🗑️ カート削除レスポンス:', { status: response.status, url });
 
       const data = await response.json();
 
@@ -158,14 +162,18 @@ const Cart = () => {
   const clearCart = async () => {
     if (!confirm('カートを空にしますか？')) return;
 
-    try {
-      const token = localStorage.getItem('authToken');
-      if (!token) return;
+    try {url = `${API_BASE_URL}/api/cart`;
+      console.log('🗑️ カート全削除リクエスト:', { url, method: 'DELETE' });
       
-      const response = await fetch(`${API_BASE_URL}/api/cart`, {
-        method: 'POST',
+      const response = await fetch(url, {
+        method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      console.log('🗑️ カート全削除レスポンス:', { status: response.status, url     'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify({ _method: 'DELETE' }),
