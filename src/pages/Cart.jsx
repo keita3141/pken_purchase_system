@@ -97,7 +97,10 @@ const Cart = () => {
       const token = localStorage.getItem('authToken');
       if (!token) return;
       
-      const response = await fetch(`${API_BASE_URL}/api/cart/${itemId}`, {
+      const url = `${API_BASE_URL}/api/cart/${itemId}`;
+      console.log('📦 カート更新リクエスト:', { url, method: 'POST', itemId, newQuantity });
+      
+      const response = await fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -105,6 +108,8 @@ const Cart = () => {
         },
         body: JSON.stringify({ quantity: newQuantity }),
       });
+
+      console.log('📦 カート更新レスポンス:', { status: response.status, url });
 
       const data = await response.json();
 
