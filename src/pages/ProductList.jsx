@@ -261,7 +261,9 @@ const ProductList = () => {
                   <img
                     src={imageSrc}
                     alt={product.name}
-                    className="w-full h-full"
+                    className={`w-full h-full ${
+                      product.stock === 0 ? 'brightness-50' : ''
+                    }`}
                     style={{ objectFit: 'fill' }}
                     loading="lazy"
                     onError={(e) => {
@@ -269,6 +271,16 @@ const ProductList = () => {
                       e.currentTarget.src = PLACEHOLDER_IMAGE;
                     }}
                   />
+
+                  {/* 在庫状態オーバーレイ */}
+                  {product.stock === 0 && (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="bg-black/60 px-3 py-2 rounded text-white text-sm font-bold">
+                        売り切れ
+                      </div>
+                    </div>
+                  )}
+
                   {/* お気に入りボタン（右上） */}
                   <button
                     onClick={(e) => handleFavoriteClick(e, product.id)}
@@ -333,6 +345,25 @@ const ProductList = () => {
                   >
                     ¥{Number(product.price).toLocaleString()}
                   </p>
+
+                  {/* 在庫ステータス表示 */}
+                  <div className="mt-2">
+                    {product.stock === 0 ? (
+                      <p className="text-xs font-bold text-red-600 bg-red-50 px-2 py-1 rounded text-center">
+                        売り切れ
+                      </p>
+                    ) : product.stock <= 5 ? (
+                      <div>
+                        <p className="text-xs font-bold text-orange-600 bg-orange-50 px-2 py-0.5 rounded">
+                          残りわずか：{product.stock}個
+                        </p>
+                      </div>
+                    ) : (
+                      <p className="text-xs text-gray-500 px-2 py-0.5">
+                        在庫あり
+                      </p>
+                    )}
+                  </div>
                 </div>
                 </Link>
               );
