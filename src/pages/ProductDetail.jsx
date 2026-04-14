@@ -418,7 +418,7 @@ const ProductDetail = () => {
                 {/* 在庫情報 - 数量選択の上に配置 */}
                 <div className="mb-8 px-5 py-4 bg-blue-50 rounded-xl border-2 border-blue-200">
                   <p className={`text-lg md:text-xl font-bold ${getStockColor()}`}>
-                    {product.stock ? (
+                    {product.stock !== undefined && product.stock !== null ? (
                       <>
                         残り <span className="text-2xl md:text-3xl">{product.stock}</span> 個
                         {product.stock <= 5 && (
