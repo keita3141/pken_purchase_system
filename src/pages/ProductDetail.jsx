@@ -421,7 +421,7 @@ const ProductDetail = () => {
                     {product.stock !== undefined && product.stock !== null ? (
                       <>
                         残り <span className="text-2xl md:text-3xl">{product.stock}</span> 個
-                        {product.stock <= 5 && (
+                        {product.stock <= 5 && product.stock > 0 && (
                           <span className="ml-2 text-xs md:text-sm text-red-600 font-bold">（在庫わずか）</span>
                         )}
                       </>
