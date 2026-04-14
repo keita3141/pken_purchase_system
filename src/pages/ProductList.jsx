@@ -116,7 +116,12 @@ const ProductList = () => {
 
   // 表示商品
   const displayedProducts = useMemo(() => {
-    if (activeCategory === 'すべて') return products;
+    if (activeCategory === 'すべて') {
+      // お気に入りを上に出すようにソート
+      const favorited = products.filter(p => favorites.includes(p.id));
+      const notFavorited = products.filter(p => !favorites.includes(p.id));
+      return [...favorited, ...notFavorited];
+    }
     if (activeCategory === 'お気に入り') {
       return products.filter(p => favorites.includes(p.id));
     }
