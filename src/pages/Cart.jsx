@@ -162,7 +162,11 @@ const Cart = () => {
   const clearCart = async () => {
     if (!confirm('カートを空にしますか？')) return;
 
-    try {url = `${API_BASE_URL}/api/cart`;
+    try {
+      const token = localStorage.getItem('authToken');
+      if (!token) return;
+      
+      const url = `${API_BASE_URL}/api/cart`;
       console.log('🗑️ カート全削除リクエスト:', { url, method: 'DELETE' });
       
       const response = await fetch(url, {
@@ -173,11 +177,7 @@ const Cart = () => {
         },
       });
 
-      console.log('🗑️ カート全削除レスポンス:', { status: response.status, url     'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
-        body: JSON.stringify({ _method: 'DELETE' }),
-      });
+      console.log('🗑️ カート全削除レスポンス:', { status: response.status, url });
 
       const data = await response.json();
 
