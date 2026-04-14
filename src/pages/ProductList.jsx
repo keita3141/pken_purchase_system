@@ -1,8 +1,9 @@
 ﻿import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, Heart } from 'lucide-react';
+import { Heart } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { getFavorites, toggleFavorite } from '../utils/favorites';
+import CategoryChips from '../components/CategoryChips';
 
 const PLACEHOLDER_IMAGE = '/no-image.png';
 
@@ -23,7 +24,6 @@ const ProductList = () => {
   const [error, setError] = useState(null);
   const [activeCategory, setActiveCategory] = useState('すべて');
   const [favorites, setFavorites] = useState([]);
-  const categoryBarRef = useRef(null);
   const hasFetchedRef = useRef(false); // 一度だけ実行するためのフラグ
   
   // 認証状態を取得
@@ -132,10 +132,6 @@ const ProductList = () => {
     return [...favorited, ...notFavorited];
   }, [products, activeCategory]);
 
-  const scrollCategories = (dir) => {
-    categoryBarRef.current?.scrollBy({ left: dir * 140, behavior: 'smooth' });
-  };
-
   // カテゴリ変更ハンドラー
   const handleCategoryChange = (category) => {
     setActiveCategory(category);
@@ -171,52 +167,14 @@ const ProductList = () => {
   return (
     <div style={{ backgroundColor: '#faf3e8', minHeight: '100vh', paddingTop: '56px' }}>
 
-      {/* ─── カテゴリタブバー ─── */}
-      <div
-        className="sticky z-50 flex items-center"
-        style={{ top: '56px', backgroundColor: '#faf3e8', borderBottom: '1px solid #ddd0bb' }}
-      >
-        <button
-          onClick={() => scrollCategories(-1)}
-          aria-label="左へスクロール"
-          className="flex-shrink-0 flex items-center justify-center text-gray-500 active:bg-gray-100"
-          style={{ width: '32px', height: '46px' }}
-        >
-          <ChevronLeft size={18} />
-        </button>
-
-        <div ref={categoryBarRef} className="flex overflow-x-auto no-scrollbar flex-1 items-center py-2">
-          {categories.map(cat => (
-            <button
-              key={cat}
-              onClick={() => handleCategoryChange(cat)}
-              className="flex-shrink-0 px-4 text-sm transition-colors"
-              style={{
-                padding: '7px 14px',
-                lineHeight: '1.2',
-                marginRight: '8px',
-                fontWeight: activeCategory === cat ? '700' : '400',
-                color: activeCategory === cat ? '#00873c' : '#444',
-                backgroundColor: activeCategory === cat ? '#e8f5ed' : '#fffaf2',
-                border: activeCategory === cat ? '1px solid #00873c' : '1px solid #d6c9b8',
-                borderRadius: '999px',
-                whiteSpace: 'nowrap',
-              }}
-            >
-              {cat}
-            </button>
-          ))}
-        </div>
-
-        <button
-          onClick={() => scrollCategories(1)}
-          aria-label="右へスクロール"
-          className="flex-shrink-0 flex items-center justify-center text-gray-500 active:bg-gray-100"
-          style={{ width: '32px', height: '46px' }}
-        >
-          <ChevronRight size={18} />
-        </button>
-      </div>
+      {/* ─── カテゴリチップスバー ─── */}
+      <CategoryChips
+        categories={categories}
+        activeCategory={activeCategory}
+        onCategoryChange={handleCategoryChange}
+        showArrows={true}
+        bgColor="#faf3e8"
+      />
 
       {/* ─── コンテンツ ─── */}
       <div style={{ padding: '12px 8px 80px' }}>

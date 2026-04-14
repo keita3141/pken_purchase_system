@@ -324,6 +324,15 @@ img {
     display: none;
 }
 
+/* Tailwind scrollbar-hide (fallback) */
+.scrollbar-hide {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+.scrollbar-hide::-webkit-scrollbar {
+    display: none; /* Chrome, Safari and Opera */
+}
+
 /* Forms (Login/Register) */
 .form-card {
     background-color: #ffffff;

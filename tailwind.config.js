@@ -67,6 +67,23 @@ export default {
     'text-red-500',
     'text-gray-400',
   ],
-  plugins: [],
+  plugins: [
+    // スクロールバー非表示プラグイン
+    function ({ addUtilities }) {
+      addUtilities({
+        '.scrollbar-hide': {
+          '-ms-overflow-style': 'none', /* IE and Edge */
+          'scrollbar-width': 'none', /* Firefox */
+          '&::-webkit-scrollbar': {
+            display: 'none', /* Chrome, Safari and Opera */
+          },
+        },
+        '.scrollbar-show': {
+          '-ms-overflow-style': 'auto',
+          'scrollbar-width': 'auto',
+        },
+      });
+    },
+  ],
 }
 
