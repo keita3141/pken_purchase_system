@@ -111,14 +111,17 @@ const ProductList = () => {
   // カテゴリ一覧（重複排除）
   const categories = useMemo(() => {
     const cats = [...new Set(products.map(p => p.category_name).filter(Boolean))];
-    return ['すべて', ...cats];
+    return ['すべて', 'お気に入り', ...cats];
   }, [products]);
 
   // 表示商品
   const displayedProducts = useMemo(() => {
     if (activeCategory === 'すべて') return products;
+    if (activeCategory === 'お気に入り') {
+      return products.filter(p => favorites.includes(p.id));
+    }
     return products.filter(p => p.category_name === activeCategory);
-  }, [products, activeCategory]);
+  }, [products, activeCategory, favorites]);
 
   const scrollCategories = (dir) => {
     categoryBarRef.current?.scrollBy({ left: dir * 140, behavior: 'smooth' });
