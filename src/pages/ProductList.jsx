@@ -4,6 +4,7 @@ import { Heart } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { getFavorites, toggleFavorite } from '../utils/favorites';
 import CategoryChips from '../components/CategoryChips';
+import SearchDrawer from '../components/SearchDrawer';
 
 const PLACEHOLDER_IMAGE = '/no-image.png';
 
@@ -23,6 +24,8 @@ const ProductList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [activeCategory, setActiveCategory] = useState('すべて');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [favorites, setFavorites] = useState([]);
   const hasFetchedRef = useRef(false); // 一度だけ実行するためのフラグ
   
@@ -116,21 +119,33 @@ const ProductList = () => {
 
   // 表示商品
   const displayedProducts = useMemo(() => {
-    let filtered;
+    let filtered = products;
     
-    if (activeCategory === 'すべて') {
-      filtered = products;
-    } else if (activeCategory === 'お気に入り') {
-      return products.filter(p => favorites.includes(p.id));
-    } else {
+    // カテゴリフィルタリング
+    if (activeCategory === 'お気に入り') {
+      filtered = products.filter(p => favorites.includes(p.id));
+    } else if (activeCategory !== 'すべて') {
       filtered = products.filter(p => p.category_name === activeCategory);
     }
+
+    // 検索フィルタリング
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter(p => 
+        p.name.toLowerCase().includes(query) || 
+        (p.category_name && p.category_name.toLowerCase().includes(query))
+      );
+    }
     
-    // お気に入りを上に出すようにソート（『お気に入り』タブ以外）
-    const favorited = filtered.filter(p => favorites.includes(p.id));
-    const notFavorited = filtered.filter(p => !favorites.includes(p.id));
-    return [...favorited, ...notFavorited];
-  }, [products, activeCategory]);
+    // お気に入りを上に出すようにソート（『お気に入り』タブ以外、または検索中以外）
+    if (activeCategory !== 'お気に入り') {
+      const favorited = filtered.filter(p => favorites.includes(p.id));
+      const notFavorited = filtered.filter(p => !favorites.includes(p.id));
+      return [...favorited, ...notFavorited];
+    }
+
+    return filtered;
+  }, [products, activeCategory, favorites, searchQuery]);
 
   // カテゴリ変更ハンドラー
   const handleCategoryChange = (category) => {
@@ -172,16 +187,35 @@ const ProductList = () => {
         categories={categories}
         activeCategory={activeCategory}
         onCategoryChange={handleCategoryChange}
+        onSearchClick={() => setIsSearchOpen(true)}
         bgColor="#ffffff"
+      />
+
+      {/* ─── 検索ドロワー ─── */}
+      <SearchDrawer
+        isOpen={isSearchOpen}
+        onClose={() => setIsSearchOpen(false)}
+        onSearch={(query) => setSearchQuery(query)}
+        initialValue={searchQuery}
       />
 
       {/* ─── コンテンツ ─── */}
       <div className="p-4 pb-20">
 
         {/* セクションタイトル */}
-        <h1 className="text-xl font-bold mb-4 text-gray-800 px-1">
-          {activeCategory}
-        </h1>
+        <div className="flex items-center justify-between mb-4 px-1">
+          <h1 className="text-xl font-bold text-gray-800">
+            {searchQuery ? `「${searchQuery}」の検索結果` : activeCategory}
+          </h1>
+          {searchQuery && (
+            <button
+              onClick={() => setSearchQuery('')}
+              className="text-xs text-blue-500 font-bold"
+            >
+              リセット
+            </button>
+          )}
+        </div>
 
         {/* 商品グリッド */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">

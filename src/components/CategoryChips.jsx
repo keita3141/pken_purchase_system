@@ -8,6 +8,7 @@ const CategoryChips = ({
   categories = [],
   activeCategory = '',
   onCategoryChange = () => {},
+  onSearchClick = () => {},
   bgColor = '#ffffff',
 }) => {
   const scrollContainerRef = useRef(null);
@@ -23,6 +24,7 @@ const CategoryChips = ({
       {/* 検索・絞り込みボタン（固定） */}
       <div className="flex-shrink-0 p-2 pl-4 border-r border-gray-100 flex items-center justify-center bg-white">
         <button
+          onClick={onSearchClick}
           className="w-9 h-9 rounded-full border border-gray-100 flex items-center justify-center text-gray-500 shadow-sm hover:bg-gray-50 transition-colors"
           aria-label="検索"
         >
