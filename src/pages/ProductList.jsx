@@ -231,7 +231,7 @@ const ProductList = () => {
                 <Link
                   to={`/products/${product.id}`}
                   key={product.id}
-                  className="block bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden active:scale-[0.98] transition-transform"
+                  className="block bg-white rounded-sm shadow-sm border border-gray-100 overflow-hidden active:scale-[0.98] transition-transform"
                 >
                 {/* 商品画像（正方形） */}
                 <div className="w-full aspect-square relative overflow-hidden bg-gray-50">
@@ -251,7 +251,7 @@ const ProductList = () => {
                   {/* 在庫状態オーバーレイ */}
                   {product.stock === 0 && (
                     <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                      <div className="bg-black/60 px-3 py-2 rounded-lg text-white text-sm font-bold">
+                      <div className="bg-black/60 px-3 py-2 rounded-sm text-white text-sm font-bold">
                         売り切れ
                       </div>
                     </div>
@@ -260,12 +260,12 @@ const ProductList = () => {
                   {/* お気に入りボタン（右上） */}
                   <button
                     onClick={(e) => handleFavoriteClick(e, product.id)}
-                    className="absolute top-2 right-2 z-20 w-9 h-9 flex items-center justify-center rounded-full bg-white/90 shadow-sm hover:bg-white hover:scale-110 transition-transform active:scale-90"
+                    className="absolute top-2 right-2 z-20 w-8 h-8 flex items-center justify-center rounded-full bg-white/90 shadow-sm hover:bg-white hover:scale-110 transition-transform active:scale-90"
                     aria-label="お気に入りに追加"
                     style={{ backdropFilter: 'blur(4px)' }}
                   >
                     <Heart
-                      size={18}
+                      size={16}
                       className={`transition-colors ${
                         favorites.includes(product.id)
                           ? 'fill-red-500 text-red-500'
@@ -276,39 +276,38 @@ const ProductList = () => {
 
                   {/* ラベル（画像左上） */}
                   {product.label && (
-                    <div className="absolute top-2 left-2 z-10 bg-orange-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm">
+                    <div className="absolute top-2 left-2 z-10 bg-orange-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-sm shadow-sm">
                       {product.label}
                     </div>
                   )}
                 </div>
 
                 {/* 商品情報 */}
-                <div className="p-4 pt-2">
-                  {/* カテゴリ/ベンダー（任意） */}
-                  <div className="flex items-center gap-1 mb-1">
-                    <span className="text-[10px] text-gray-400 font-medium truncate">
+                <div className="p-3 pt-2">
+                  {/* カテゴリ（任意） */}
+                  <div className="flex items-center gap-1 mb-0.5">
+                    <span className="text-[9px] text-gray-400 font-medium truncate uppercase tracking-tighter">
                       {product.category_name}
                     </span>
                   </div>
 
                   {/* 商品名 */}
-                  <h3 className="text-sm font-bold text-gray-800 line-clamp-1 leading-tight mb-1">
+                  <h3 className="text-sm font-bold text-gray-800 line-clamp-1 leading-tight">
                     {product.name}
                   </h3>
 
-                  {/* 価格 */}
-                  <p className="text-green-600 font-extrabold text-lg">
-                    ¥{Number(product.price).toLocaleString()}
-                  </p>
-
-                  {/* 在庫ステータス表示 */}
-                  <div className="mt-2 h-5">
+                  {/* 価格と在庫ステータス（横並び） */}
+                  <div className="flex items-baseline gap-2 mt-1">
+                    <p className="text-green-600 font-extrabold text-lg leading-none">
+                      ¥{Number(product.price).toLocaleString()}
+                    </p>
+                    
                     {product.stock === 0 ? (
-                      <span className="text-[10px] font-bold text-red-500 bg-red-50 px-2 py-0.5 rounded">
+                      <span className="text-[10px] font-bold text-red-500 bg-red-50 px-1.5 py-0.5 rounded-sm">
                         売り切れ
                       </span>
                     ) : product.stock <= 5 ? (
-                      <span className="text-[10px] font-bold text-orange-500 bg-orange-50 px-2 py-0.5 rounded">
+                      <span className="text-[10px] font-bold text-orange-500 bg-orange-50 px-1.5 py-0.5 rounded-sm">
                         残り{product.stock}点
                       </span>
                     ) : null}
