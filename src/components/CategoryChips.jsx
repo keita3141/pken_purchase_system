@@ -1,68 +1,42 @@
 import React, { useRef } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { Search } from 'lucide-react';
 
 /**
- * CategoryChips - 横スクロール可能なカテゴリチップスコンポーネント
- * 
- * @component
- * @param {Object} props
- * @param {Array<string>} props.categories - 表示するカテゴリ配列
- * @param {string} props.activeCategory - 現在選択中のカテゴリ
- * @param {Function} props.onCategoryChange - カテゴリ選択時のコールバック関数
- * @param {boolean} [props.showArrows=true] - スクロール矢印を表示するか
- * @param {string} [props.bgColor='#faf3e8'] - 背景色
- * @returns {React.ReactElement}
+ * CategoryChips - KFC風の横スクロール可能なカテゴリタブコンポーネント
  */
 const CategoryChips = ({
   categories = [],
   activeCategory = '',
   onCategoryChange = () => {},
-  showArrows = true,
-  bgColor = '#faf3e8',
+  bgColor = '#ffffff',
 }) => {
   const scrollContainerRef = useRef(null);
 
-  /**
-   * スクロールコンテナを指定方向にスクロール
-   * @param {number} direction - スクロール方向 (負=左, 正=右)
-   */
-  const handleScroll = (direction) => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollBy({
-        left: direction * 140,
-        behavior: 'smooth',
-      });
-    }
-  };
-
   return (
-    <div
-      className="sticky z-50 flex items-center gap-0"
+    <nav
+      className="sticky z-50 flex items-center bg-white border-b"
       style={{
         top: '56px',
         backgroundColor: bgColor,
-        borderBottom: '1px solid #ddd0bb',
       }}
     >
-      {/* 左スクロール矢印 */}
-      {showArrows && (
+      {/* 検索・絞り込みボタン（固定） */}
+      <div className="flex-shrink-0 p-2 pl-4 border-r border-gray-100 flex items-center justify-center bg-white">
         <button
-          onClick={() => handleScroll(-1)}
-          aria-label="左へスクロール"
-          className="flex-shrink-0 flex items-center justify-center text-gray-500 active:bg-gray-100 transition-colors duration-200"
-          style={{ width: '32px', height: '46px' }}
+          className="w-9 h-9 rounded-full border border-gray-100 flex items-center justify-center text-gray-500 shadow-sm hover:bg-gray-50 transition-colors"
+          aria-label="検索"
         >
-          <ChevronLeft size={18} />
+          <Search size={18} />
         </button>
-      )}
+      </div>
 
-      {/* チップスコンテナ */}
+      {/* カテゴリタブコンテナ */}
       <div
         ref={scrollContainerRef}
-        className="flex overflow-x-auto scrollbar-hide flex-1 items-center py-2 px-2 gap-2"
+        className="flex overflow-x-auto items-center flex-1 no-scrollbar bg-white"
         style={{
           scrollBehavior: 'smooth',
-          WebkitOverflowScrolling: 'touch', // 慣性スクロール対応
+          WebkitOverflowScrolling: 'touch',
         }}
       >
         {categories.map((category) => {
@@ -73,30 +47,15 @@ const CategoryChips = ({
               key={category}
               onClick={() => onCategoryChange(category)}
               className={`
-                flex-shrink-0 px-4 py-2 rounded-full
-                text-sm font-medium whitespace-nowrap
-                transition-colors duration-200
+                flex-shrink-0 px-5 py-3.5
+                text-[15px] font-bold whitespace-nowrap
+                transition-all duration-200 border-b-4
                 ${
                   isActive
-                    ? 'bg-green-600 text-white border border-transparent shadow-sm'
-                    : 'bg-white text-gray-700 border border-gray-200 hover:bg-green-50'
+                    ? 'text-black border-black'
+                    : 'text-gray-400 border-transparent'
                 }
               `}
-              style={{
-                // Tailwind未対応時のフォールバック
-                ...(isActive
-                  ? {
-                      backgroundColor: '#16a34a',
-                      color: '#ffffff',
-                      borderColor: 'transparent',
-                      boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
-                    }
-                  : {
-                      backgroundColor: '#ffffff',
-                      color: '#374151',
-                      borderColor: '#e5e7eb',
-                    }),
-              }}
             >
               {category}
             </button>
@@ -104,19 +63,19 @@ const CategoryChips = ({
         })}
       </div>
 
-      {/* 右スクロール矢印 */}
-      {showArrows && (
-        <button
-          onClick={() => handleScroll(1)}
-          aria-label="右へスクロール"
-          className="flex-shrink-0 flex items-center justify-center text-gray-500 active:bg-gray-100 transition-colors duration-200"
-          style={{ width: '32px', height: '46px' }}
-        >
-          <ChevronRight size={18} />
-        </button>
-      )}
-    </div>
+      <style>{`
+        .no-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+        .no-scrollbar {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+      `}</style>
+    </nav>
   );
 };
+
+export default CategoryChips;
 
 export default CategoryChips;

@@ -172,8 +172,7 @@ const ProductList = () => {
         categories={categories}
         activeCategory={activeCategory}
         onCategoryChange={handleCategoryChange}
-        showArrows={true}
-        bgColor="#faf3e8"
+        bgColor="#ffffff"
       />
 
       {/* ─── コンテンツ ─── */}
