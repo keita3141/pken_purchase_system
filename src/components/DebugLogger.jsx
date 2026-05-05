@@ -5,11 +5,13 @@ const DebugLogger = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const [testingReset, setTestingReset] = useState(false);
 
   // デバッグモードの判定
   const forceDebug = import.meta.env.VITE_FORCE_DEBUG === 'true';
   const isDev = import.meta.env.DEV;
   const shouldShow = isDev || forceDebug;
+  const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/$/, '');
 
   useEffect(() => {
     setIsMounted(true);
@@ -127,6 +129,34 @@ const DebugLogger = () => {
               <span className="text-xs text-gray-200">({logs.length})</span>
             </div>
             <div className="flex gap-2">
+              <button
+                onClick={async () => {
+                  try {
+                    setTestingReset(true);
+                    const testStudentId = prompt('テスト用の学生番号を入力してください', '123456');
+                    if (!testStudentId) return;
+                    
+                    console.log('--- パスワード再設定API疎通テスト開始 ---');
+                    const response = await fetch(`${API_BASE_URL}/api/password-reset/send-code`, {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ student_id: testStudentId }),
+                    });
+                    const data = await response.json();
+                    console.log('テスト結果:', data);
+                    alert(response.ok ? '✅ 送信成功！LINEを確認してください。' : `❌ 送信失敗: ${data.message}`);
+                  } catch (err) {
+                    console.error('テスト実行エラー:', err);
+                    alert('エラーが発生しました。ログを確認してください。');
+                  } finally {
+                    setTestingReset(false);
+                  }
+                }}
+                disabled={testingReset}
+                className="text-white hover:bg-green-700 px-2 py-1 rounded text-xs font-bold border border-white"
+              >
+                {testingReset ? '通信中...' : '🔑 APIテスト'}
+              </button>
               <button
                 onClick={() => setIsMinimized(!isMinimized)}
                 className="text-white hover:bg-green-700 px-2 py-1 rounded text-xs font-bold"

@@ -27,11 +27,9 @@ const ForgotPassword = () => {
         setLoading(true);
 
         try {
-            console.log('認証コード送信(LINE):', { student_id: studentId });
+            console.log('認証コード送信(API):', { student_id: studentId });
             
-            // APIリクエストのシミュレーション
-            // 実際の実装では、サーバー側で学生番号からLINE IDを特定し、Messaging APIを叩く
-            const response = await fetch(`${API_BASE_URL}/api/auth/forgot-password/line`, {
+            const response = await fetch(`${API_BASE_URL}/api/password-reset/send-code`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ student_id: studentId }),
@@ -39,34 +37,27 @@ const ForgotPassword = () => {
 
             const data = await response.json();
 
-            // LINE連携されていない場合のエラーハンドリング
-            if (response.status === 404 || (data && data.error === 'line_not_linked')) {
-                setLoading(false);
-                openModal({
-                    type: 'error',
-                    title: 'LINE連携未完了',
-                    message: (
-                        <div className="text-left py-2">
-                            <p className="font-bold text-red-600 mb-2">LINE連携が確認できませんでした。</p>
-                            <p className="text-sm text-stone-600">この機能を利用するには、事前にマイページからLINE連携を行う必要があります。お困りの場合は管理者にお問い合わせください。</p>
-                        </div>
-                    ),
-                    confirmText: '閉じる'
-                });
+            if (!response.ok) {
+                // LINE連携されていない、またはその他のエラー
+                if (response.status === 404 || data.error === 'line_not_linked') {
+                    openModal({
+                        type: 'error',
+                        title: 'LINE連携未完了',
+                        message: data.message || 'LINE連携が確認できません。管理者にお問い合わせください。',
+                        confirmText: '閉じる'
+                    });
+                } else {
+                    throw new Error(data.message || '認証コードの送信に失敗しました');
+                }
                 return;
             }
 
-            if (!response.ok) throw new Error(data.message || '認証コードの送信に失敗しました');
-
             // 成功時
             setLineSent(true);
-            setTimeout(() => setStep(2), 500); // 少し間を置いてステップ2へ
+            setTimeout(() => setStep(2), 500); 
         } catch (err) {
-            // モック用の成功ルート（API未実装時用）
-            console.warn('APIエラーのためモック処理を実行します:', err.message);
-            await new Promise(resolve => setTimeout(resolve, 1500));
-            setLineSent(true);
-            setStep(2);
+            console.error('API Error:', err);
+            setError(err.message || 'エラーが発生しました');
         } finally {
             setLoading(false);
         }
@@ -90,34 +81,37 @@ const ForgotPassword = () => {
 
         setLoading(true);
         try {
-            console.log('パスワードリセット実行:', {
+            console.log('パスワード更新(API):', {
                 student_id: studentId,
                 code: codeString,
-                password: password
             });
 
-            // 実際の実装イメージ:
-            /*
-            const response = await fetch(`${API_BASE_URL}/api/auth/reset-password`, {
+            const response = await fetch(`${API_BASE_URL}/api/password-reset/verify-and-update`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     student_id: studentId,
                     code: codeString,
-                    password: password
+                    new_password: password
                 }),
             });
-            if (!response.ok) throw new Error('パスワードの更新に失敗しました');
-            */
 
-            await new Promise(resolve => setTimeout(resolve, 1000));
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || 'パスワードの更新に失敗しました');
+            }
 
             openModal({
                 type: 'success',
                 title: '完了',
-                message: 'パスワードを変更しました。新しいパスワードでログインしてください。',
+                message: 'パスワードを更新しました。新しいパスワードでログインしてください。',
                 onConfirm: () => navigate('/login')
             });
+            
+            // 2秒後に自動遷移（モーダルを閉じなかった場合用）
+            setTimeout(() => navigate('/login'), 2000);
+
         } catch (err) {
             setError(err.message || 'エラーが発生しました');
         } finally {
