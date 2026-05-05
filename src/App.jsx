@@ -6,6 +6,7 @@ import { ModalProvider } from './contexts/ModalContext';
 import Modal from './components/Modal';
 import ProtectedRoute from './components/ProtectedRoute';
 import DebugLogger from './components/DebugLogger';
+import ScrollToTop from './components/ScrollToTop';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import LineCallback from './pages/LineCallback';
@@ -23,6 +24,7 @@ import './App.css';
 function App() {
   return (
     <Router>
+      <ScrollToTop />
       <AuthProvider>
         <ModalProvider>
           <Header />
