@@ -177,23 +177,17 @@ const ProductList = () => {
       />
 
       {/* ─── コンテンツ ─── */}
-      <div style={{ padding: '12px 8px 80px' }}>
+      <div className="p-4 pb-20">
 
         {/* セクションタイトル */}
-        <h1
-          className="font-bold mb-2"
-          style={{ fontSize: '18px', color: '#1a1a1a', padding: '4px 4px 8px' }}
-        >
+        <h1 className="text-xl font-bold mb-4 text-gray-800 px-1">
           {activeCategory}
         </h1>
 
         {/* 商品グリッド */}
-        <div 
-          className="product-grid" 
-          style={{ gap: '6px' }}
-        >
+        <div className="grid grid-cols-2 gap-4">
           {displayedProducts.length === 0 ? (
-            <p className="text-center py-16 text-sm text-gray-400" style={{ gridColumn: '1 / -1' }}>
+            <p className="text-center py-16 text-sm text-gray-400 col-span-2">
               該当する商品が見つかりませんでした。
             </p>
           ) : (
@@ -204,25 +198,16 @@ const ProductList = () => {
                 <Link
                   to={`/products/${product.id}`}
                   key={product.id}
-                  className="block bg-white"
-                  style={{
-                    borderRadius: '4px',
-                    boxShadow: '0 1px 4px rgba(0,0,0,0.12)',
-                    overflow: 'hidden',
-                  }}
+                  className="block bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden active:scale-[0.98] transition-transform"
                 >
-                {/* 商品画像（4:3） */}
-                <div
-                  className="relative w-full"
-                  style={{ aspectRatio: '4 / 3', backgroundColor: '#f0ebe3', overflow: 'hidden' }}
-                >
+                {/* 商品画像（正方形） */}
+                <div className="w-full aspect-square relative overflow-hidden bg-gray-50">
                   <img
                     src={imageSrc}
                     alt={product.name}
-                    className={`w-full h-full ${
+                    className={`object-cover w-full h-full hover:scale-105 transition-transform duration-300 ${
                       product.stock === 0 ? 'brightness-50' : ''
                     }`}
-                    style={{ objectFit: 'fill' }}
                     loading="lazy"
                     onError={(e) => {
                       if (e.currentTarget.src.endsWith(PLACEHOLDER_IMAGE)) return;
@@ -232,8 +217,8 @@ const ProductList = () => {
 
                   {/* 在庫状態オーバーレイ */}
                   {product.stock === 0 && (
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="bg-black/60 px-3 py-2 rounded text-white text-sm font-bold">
+                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                      <div className="bg-black/60 px-3 py-2 rounded-lg text-white text-sm font-bold">
                         売り切れ
                       </div>
                     </div>
@@ -242,12 +227,12 @@ const ProductList = () => {
                   {/* お気に入りボタン（右上） */}
                   <button
                     onClick={(e) => handleFavoriteClick(e, product.id)}
-                    className="absolute top-2 right-2 z-20 w-10 h-10 flex items-center justify-center rounded-full bg-white/80 shadow-md hover:bg-white hover:scale-110 transition-transform active:scale-95"
+                    className="absolute top-2 right-2 z-20 w-9 h-9 flex items-center justify-center rounded-full bg-white/90 shadow-sm hover:bg-white hover:scale-110 transition-transform active:scale-90"
                     aria-label="お気に入りに追加"
                     style={{ backdropFilter: 'blur(4px)' }}
                   >
                     <Heart
-                      size={20}
+                      size={18}
                       className={`transition-colors ${
                         favorites.includes(product.id)
                           ? 'fill-red-500 text-red-500'
@@ -255,69 +240,53 @@ const ProductList = () => {
                       }`}
                     />
                   </button>
-                  {/* ドロップリボン（画像左上角） */}
+
+                  {/* ラベル（画像左上） */}
                   {product.label && (
-                    <div
-                      className="absolute text-white font-bold"
-                      style={{
-                        top: '8px',
-                        left: '-28px',
-                        width: '100px',
-                        textAlign: 'center',
-                        backgroundColor: '#ff6b35',
-                        transform: 'rotate(-45deg)',
-                        transformOrigin: 'center',
-                        fontSize: '10px',
-                        lineHeight: '1.6',
-                        padding: '3px 0',
-                        boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
-                        zIndex: 10,
-                      }}
-                    >
+                    <div className="absolute top-2 left-2 z-10 bg-orange-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm">
                       {product.label}
                     </div>
                   )}
                 </div>
 
                 {/* 商品情報 */}
-                <div style={{ padding: '8px 8px 10px' }}>
-                  {/* 商品名 (▶ プレフィックス付き) */}
-                  <p
-                    className="leading-snug mb-1.5"
-                    style={{
-                      fontSize: '12px',
-                      color: '#1a1a1a',
-                      display: '-webkit-box',
-                      WebkitLineClamp: 3,
-                      WebkitBoxOrient: 'vertical',
-                      overflow: 'hidden',
-                    }}
-                  >
-                    <span style={{ color: '#00873c', fontSize: '10px', marginRight: '2px' }}>▶</span>
+                <div className="p-4 pt-2">
+                  {/* カテゴリ/ベンダー（任意） */}
+                  <div className="flex items-center gap-1 mb-1">
+                    <span className="text-[10px] text-gray-400 font-medium truncate">
+                      {product.category_name}
+                    </span>
+                  </div>
+
+                  {/* 商品名 */}
+                  <h3 className="text-sm font-bold text-gray-800 line-clamp-1 leading-tight mb-1">
                     {product.name}
-                  </p>
+                  </h3>
+
                   {/* 価格 */}
-                  <p
-                    className="font-bold"
-                    style={{ color: '#00873c', fontSize: '15px', letterSpacing: '-0.3px' }}
-                  >
+                  <p className="text-green-600 font-extrabold text-lg">
                     ¥{Number(product.price).toLocaleString()}
                   </p>
 
                   {/* 在庫ステータス表示 */}
-                  <div className="mt-2">
+                  <div className="mt-2 h-5">
                     {product.stock === 0 ? (
-                      <p className="text-xs font-bold text-red-600 bg-red-50 px-2 py-1 rounded text-center">
+                      <span className="text-[10px] font-bold text-red-500 bg-red-50 px-2 py-0.5 rounded">
                         売り切れ
-                      </p>
+                      </span>
                     ) : product.stock <= 5 ? (
-                      <div>
-                        <p className="text-xs font-bold text-orange-600 bg-orange-50 px-2 py-0.5 rounded">
-                          残りわずか：{product.stock}個
-                        </p>
-                      </div>
-                    ) : (
-                      <p className="text-xs text-gray-500 px-2 py-0.5">
+                      <span className="text-[10px] font-bold text-orange-500 bg-orange-50 px-2 py-0.5 rounded">
+                        残り{product.stock}点
+                      </span>
+                    ) : null}
+                  </div>
+                </div>
+                </Link>
+              );
+            })
+          )}
+        </div>
+      </div>
                         在庫あり
                       </p>
                     )}
