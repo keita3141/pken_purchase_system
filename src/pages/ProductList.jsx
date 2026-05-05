@@ -287,25 +287,25 @@ const ProductList = () => {
                   <div>
                     {/* カテゴリ */}
                     <div className="flex items-center gap-1">
-                      <span className="text-[8px] text-gray-400 font-medium truncate uppercase tracking-tighter">
+                      <span className="text-[8px] lg:text-[12px] text-gray-400 font-medium truncate uppercase tracking-tighter">
                         {product.category_name}
                       </span>
                     </div>
 
                     {/* 商品名 */}
-                    <h3 className="text-[11px] lg:text-[14px] font-bold text-gray-800 line-clamp-2 leading-tight mt-0.5">
+                    <h3 className="text-[11px] lg:text-[18px] font-bold text-gray-800 line-clamp-2 leading-tight mt-0.5 lg:mt-1">
                       {product.name}
                     </h3>
                   </div>
 
                   {/* 価格と在庫ステータス */}
-                  <div className="flex items-baseline gap-1.5 mt-0.5">
-                    <p className="text-green-600 font-extrabold text-[14px] lg:text-[18px] leading-none">
+                  <div className="flex items-baseline gap-1.5 lg:gap-3 mt-0.5 lg:mt-2">
+                    <p className="text-green-600 font-extrabold text-[14px] lg:text-[24px] leading-none">
                       ¥{Number(product.price).toLocaleString()}
                     </p>
                     
                     {product.stock > 0 && product.stock <= 5 && (
-                      <span className="text-[8px] lg:text-[10px] font-bold text-orange-500 bg-orange-50 px-1 py-0.5 rounded-sm">
+                      <span className="text-[8px] lg:text-[14px] font-bold text-orange-500 bg-orange-50 px-1 py-0.5 lg:px-2 lg:py-1 rounded-sm">
                         残り{product.stock}
                       </span>
                     )}
