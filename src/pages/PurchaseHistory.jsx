@@ -170,8 +170,7 @@ const PurchaseHistory = () => {
                       const productName = product.name || '商品名不明';
                       const productPrice = product.price || detail.price || 0;
                       const quantity = detail.quantity || 1;
-                      
-                      // 利用可能な画像URLを取得
+                      // カート画面と全く同じ方法：product.image_url をそのまま使用
                       const productImage = product.image_url || '';
 
                       return (
@@ -184,7 +183,7 @@ const PurchaseHistory = () => {
                             {productImage ? (
                               <img src={productImage} alt={productName} className="w-full h-full object-contain" />
                             ) : (
-                              <div className="text-[10px] text-stone-400">No Image</div>
+                              <span className="text-xs text-stone-400">No Image</span>
                             )}
                           </Link>
 
