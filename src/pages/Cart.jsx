@@ -426,12 +426,9 @@ const Cart = () => {
 
                         {/* Product Info and Controls - Center Section */}
                         <div className="flex-1 min-w-0">
-                          <Link to={`/products/${product.id}`} className="font-bold text-xs md:text-base text-stone-800 hover:text-mos-green line-clamp-2 block mb-0.5 md:mb-1">
+                          <Link to={`/products/${product.id}`} className="font-bold text-sm md:text-xl text-stone-800 hover:text-mos-green line-clamp-2 block mb-2 md:mb-3">
                             {productName}
                           </Link>
-                          <p className="text-xs md:text-sm text-stone-600 mb-1 md:mb-2 line-clamp-1">
-                            {product.description || ''}
-                          </p>
                           
                           {/* Quantity Controls */}
                           <div className="flex items-center gap-2 md:gap-3 mt-1 md:mt-2">
