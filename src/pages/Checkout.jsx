@@ -121,6 +121,53 @@ const Checkout = () => {
         return;
       }
 
+      // --- 在庫の最終確認処理 ---
+      const stockCheckIssues = [];
+      const updatedCartItems = [];
+
+      for (const item of cartItems) {
+        const product = item.product || item;
+        const productId = product.id;
+        
+        try {
+          const prodResponse = await fetch(`${API_BASE_URL}/api/products/${productId}`);
+          if (!prodResponse.ok) throw new Error('在庫情報が取得できません');
+          
+          const prodData = await prodResponse.json();
+          const latestProduct = prodData.data || prodData;
+          const stock = latestProduct.stock ?? 0;
+          const currentQuantity = item.quantity || 1;
+
+          if (stock <= 0) {
+            stockCheckIssues.push(`「${latestProduct.name}」が入荷待ちのため注文できません。`);
+          } else if (currentQuantity > stock) {
+            stockCheckIssues.push(`「${latestProduct.name}」の在庫が不足しています（現在庫: ${stock}個）。`);
+          }
+          updatedCartItems.push({ ...item, product: latestProduct });
+        } catch (e) {
+          console.error(`商品ID ${productId} の最終チェックエラー:`, e);
+          throw new Error('最新の在庫状況を確認できませんでした。通信環境を確認してください。');
+        }
+      }
+
+      if (stockCheckIssues.length > 0) {
+        setIsProcessing(false);
+        openModal({
+          type: 'error',
+          title: '在庫状況が変更されました',
+          message: (
+            <div className="text-left space-y-1">
+              {stockCheckIssues.map((msg, i) => <p key={i} className="text-sm">• {msg}</p>)}
+              <p className="mt-2 text-xs text-red-600 font-bold">カートに戻って内容を確認してください。</p>
+            </div>
+          ),
+          confirmText: 'カートへ戻る',
+          onConfirm: () => navigate('/cart')
+        });
+        return;
+      }
+      // -------------------------
+
       // 注文データを構築（バックエンド仕様に準拠）
       // items: product_id と quantity のみ
       // 合計金額はサーバー側で計算

@@ -70,17 +70,20 @@ const Cart = () => {
       }
 
       // APIレスポンスの構造: { success: true, data: { items: [...], total: 1000, count: 5 } }
+      let items = [];
       if (data.success && data.data && Array.isArray(data.data.items)) {
         console.log('カートアイテム数:', data.data.items.length);
         console.log('合計金額:', data.data.total);
-        setCartItems(mergeCartItems(data.data.items));
+        items = data.data.items;
       } else if (Array.isArray(data)) {
         console.log('カートアイテム数:', data.length);
-        setCartItems(mergeCartItems(data));
+        items = data;
       } else {
         console.warn('カートデータが期待する構造ではありません:', data);
-        setCartItems([]);
       }
+      
+      const mergedItems = mergeCartItems(items);
+      await syncInventory(mergedItems);
       
       // グローバルなカート数を更新
       await fetchCartCount();
@@ -90,6 +93,90 @@ const Cart = () => {
       setError(err.message || 'カート情報の取得に失敗しました');
     } finally {
       setLoading(false);
+    }
+  };
+
+  /**
+   * カート内の在庫を最新の状態に同期する
+   */
+  const syncInventory = async (items) => {
+    if (!items || items.length === 0) {
+      setCartItems([]);
+      return;
+    }
+
+    const token = localStorage.getItem('authToken');
+    const adjustedItems = [];
+    const notifications = [];
+
+    try {
+      for (const item of items) {
+        const product = item.product || item;
+        const productId = product.id;
+        
+        // 最新の在庫情報を取得
+        const prodResponse = await fetch(`${API_BASE_URL}/api/products/${productId}`);
+        if (!prodResponse.ok) {
+          adjustedItems.push(item);
+          continue; // 個別商品取得エラー時はそのまま（またはスキップ）
+        }
+        
+        const prodData = await prodResponse.json();
+        const latestProduct = prodData.data || prodData;
+        const stock = latestProduct.stock ?? 0;
+        const currentQuantity = item.quantity || 1;
+
+        if (stock <= 0) {
+          // 在庫切れ: カートから削除
+          notifications.push(`「${latestProduct.name}」は在庫切れのためカートから削除されました。`);
+          try {
+            await fetch(`${API_BASE_URL}/api/cart/${item.id}`, {
+              method: 'DELETE',
+              headers: { 'Authorization': `Bearer ${token}` }
+            });
+          } catch (e) {
+            console.error('在庫切れ削除エラー:', e);
+          }
+        } else if (currentQuantity > stock) {
+          // 在庫不足: 数量を引き下げ
+          notifications.push(`「${latestProduct.name}」の在庫が不足しているため、数量を最大数（${stock}個）に変更しました。`);
+          try {
+            await fetch(`${API_BASE_URL}/api/cart/${item.id}`, {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+              },
+              body: JSON.stringify({ quantity: stock })
+            });
+            adjustedItems.push({ ...item, quantity: stock, product: latestProduct });
+          } catch (e) {
+            console.error('数量調整エラー:', e);
+            adjustedItems.push(item);
+          }
+        } else {
+          // 在庫あり: 商品情報を最新に更新
+          adjustedItems.push({ ...item, product: latestProduct });
+        }
+      }
+
+      setCartItems(adjustedItems);
+
+      if (notifications.length > 0) {
+        openModal({
+          type: 'warning',
+          title: '在庫状況の更新',
+          message: (
+            <div className="text-left space-y-1">
+              {notifications.map((msg, i) => <p key={i} className="text-sm">• {msg}</p>)}
+            </div>
+          )
+        });
+      }
+    } catch (err) {
+      console.error('Inventory sync error:', err);
+      // 通信エラーなどの場合はそのまま表示
+      setCartItems(items);
     }
   };
 
@@ -351,16 +438,16 @@ const Cart = () => {
                             <span className="text-xs md:text-sm text-stone-600">数量:</span>
                             <div className="flex items-center gap-1 md:gap-1.5 bg-stone-100 rounded">
                               <button
-                                onClick={() => updateQuantity(item.id, Math.max(1, quantity - 1), product.stock || 999)}
-                                disabled={quantity <= 1}
+                                onClick={() => updateQuantity(item.id, Math.max(1, quantity - 1), product.stock || 0)}
+                                disabled={quantity <= 1 || (product.stock ?? 0) <= 0}
                                 className="w-8 h-8 md:w-10 md:h-10 text-base md:text-lg font-bold text-mos-green flex items-center justify-center hover:bg-green-200 active:bg-green-300 transition-colors rounded-l disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-200"
                               >
                                 −
                               </button>
                               <span className="w-6 md:w-8 text-center text-sm md:text-base font-semibold">{quantity}</span>
                               <button
-                                onClick={() => updateQuantity(item.id, quantity + 1, product.stock || 999)}
-                                disabled={quantity >= (product.stock || 999)}
+                                onClick={() => updateQuantity(item.id, quantity + 1, product.stock || 0)}
+                                disabled={(product.stock ?? 0) <= 0 || quantity >= (product.stock ?? 0)}
                                 className="w-8 h-8 md:w-10 md:h-10 text-base md:text-lg font-bold text-mos-green flex items-center justify-center hover:bg-green-200 active:bg-green-300 transition-colors rounded-r disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-200"
                               >
                                 +
@@ -373,9 +460,14 @@ const Cart = () => {
                               ✕
                             </button>
                           </div>
-                          {product.stock && (
-                            <p className="text-xs md:text-sm text-stone-500 mt-0.5 md:mt-1">在庫: {product.stock}個</p>
-                          )}
+                          <div className="mt-1 md:mt-2">
+                            { (product.stock ?? 0) > 0 ? (
+                                <p className="text-xs md:text-sm text-stone-500">在庫: {product.stock}個</p>
+                              ) : (
+                                <p className="text-xs md:text-sm text-red-600 font-bold bg-red-50 inline-block px-1.5 py-0.5 rounded">本日分終了（入荷待ち）</p>
+                              )
+                            }
+                          </div>
                         </div>
 
                         {/* Price - Right Side */}
