@@ -233,8 +233,8 @@ const ProductList = () => {
                   key={product.id}
                   className="block bg-white rounded-sm shadow-sm border border-gray-100 overflow-hidden active:scale-[0.98] transition-transform aspect-square relative"
                 >
-                {/* 商品画像（高さを削ってカード全体を正方形に近づける） */}
-                <div className="w-full h-[65%] relative overflow-hidden bg-gray-50">
+                {/* 商品画像（少し高さを広げる） */}
+                <div className="w-full h-[72%] relative overflow-hidden bg-gray-50">
                   <img
                     src={imageSrc}
                     alt={product.name}
@@ -283,7 +283,7 @@ const ProductList = () => {
                 </div>
 
                 {/* 商品情報（画像の下に密着） */}
-                <div className="p-2 pt-1 h-[35%] flex flex-col justify-center">
+                <div className="p-2 pt-1 h-[28%] flex flex-col justify-center">
                   {/* カテゴリ（任意） */}
                   <div className="flex items-center gap-1">
                     <span className="text-[8px] text-gray-400 font-medium truncate uppercase tracking-tighter">
