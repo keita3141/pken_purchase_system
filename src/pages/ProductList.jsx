@@ -185,7 +185,7 @@ const ProductList = () => {
         </h1>
 
         {/* 商品グリッド */}
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
           {displayedProducts.length === 0 ? (
             <p className="text-center py-16 text-sm text-gray-400 col-span-2">
               該当する商品が見つかりませんでした。
