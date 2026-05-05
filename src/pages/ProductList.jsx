@@ -231,10 +231,10 @@ const ProductList = () => {
                 <Link
                   to={`/products/${product.id}`}
                   key={product.id}
-                  className="block bg-white rounded-sm shadow-sm border border-gray-100 overflow-hidden active:scale-[0.98] transition-transform aspect-square relative"
+                  className="block bg-white rounded-sm shadow-sm border border-gray-100 overflow-hidden active:scale-[0.98] transition-transform relative"
                 >
-                {/* 商品画像（少し高さを広げる） */}
-                <div className="w-full h-[72%] relative overflow-hidden bg-gray-50">
+                {/* 商品画像（縦長の比率に変更） */}
+                <div className="w-full aspect-[4/5] relative overflow-hidden bg-gray-50">
                   <img
                     src={imageSrc}
                     alt={product.name}
@@ -282,23 +282,25 @@ const ProductList = () => {
                   )}
                 </div>
 
-                {/* 商品情報（画像の下に密着） */}
-                <div className="p-2 pt-1 h-[28%] flex flex-col justify-center">
-                  {/* カテゴリ（任意） */}
-                  <div className="flex items-center gap-1">
-                    <span className="text-[8px] text-gray-400 font-medium truncate uppercase tracking-tighter">
-                      {product.category_name}
-                    </span>
+                {/* 商品情報（画像の下に十分なスペースを確保） */}
+                <div className="p-2.5 flex flex-col justify-between min-h-[70px]">
+                  <div>
+                    {/* カテゴリ */}
+                    <div className="flex items-center gap-1">
+                      <span className="text-[8px] text-gray-400 font-medium truncate uppercase tracking-tighter">
+                        {product.category_name}
+                      </span>
+                    </div>
+
+                    {/* 商品名（2行まで表示可能にし、隠れないように調整） */}
+                    <h3 className="text-[12px] font-bold text-gray-800 line-clamp-2 leading-tight mt-0.5">
+                      {product.name}
+                    </h3>
                   </div>
 
-                  {/* 商品名 */}
-                  <h3 className="text-[11px] font-bold text-gray-800 line-clamp-1 leading-tight">
-                    {product.name}
-                  </h3>
-
-                  {/* 価格と在庫ステータス（横並び） */}
-                  <div className="flex items-baseline gap-1 mt-0.5">
-                    <p className="text-green-600 font-extrabold text-sm leading-none">
+                  {/* 価格と在庫ステータス（下部に固定） */}
+                  <div className="flex items-baseline gap-1.5 mt-1">
+                    <p className="text-green-600 font-extrabold text-[15px] leading-none">
                       ¥{Number(product.price).toLocaleString()}
                     </p>
                     
