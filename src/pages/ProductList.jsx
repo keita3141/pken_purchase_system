@@ -276,7 +276,23 @@ const ProductList = () => {
 
                   {/* ラベル（画像左上） */}
                   {product.label && (
-                    <div className="absolute top-2 left-2 z-10 bg-orange-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-sm shadow-sm">
+                    <div
+                      className="absolute text-white font-bold"
+                      style={{
+                        top: '12px',
+                        left: '-28px',
+                        width: '100px',
+                        textAlign: 'center',
+                        backgroundColor: '#ff6b35',
+                        transform: 'rotate(-45deg)',
+                        transformOrigin: 'center',
+                        fontSize: '11px',
+                        lineHeight: '1.6',
+                        padding: '4px 0',
+                        boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
+                        zIndex: 10,
+                      }}
+                    >
                       {product.label}
                     </div>
                   )}
@@ -287,25 +303,25 @@ const ProductList = () => {
                   <div>
                     {/* カテゴリ */}
                     <div className="flex items-center gap-1">
-                      <span className="text-[8px] lg:text-[12px] text-gray-400 font-medium truncate uppercase tracking-tighter">
+                      <span className="text-[8px] lg:text-[14px] text-gray-400 font-medium truncate uppercase tracking-tighter">
                         {product.category_name}
                       </span>
                     </div>
 
                     {/* 商品名 */}
-                    <h3 className="text-[11px] lg:text-[18px] font-bold text-gray-800 line-clamp-2 leading-tight mt-0.5 lg:mt-1">
+                    <h3 className="text-[11px] lg:text-[22px] font-bold text-gray-800 line-clamp-2 leading-tight mt-0.5 lg:mt-1.5">
                       {product.name}
                     </h3>
                   </div>
 
                   {/* 価格と在庫ステータス */}
-                  <div className="flex items-baseline gap-1.5 lg:gap-3 mt-0.5 lg:mt-2">
-                    <p className="text-green-600 font-extrabold text-[14px] lg:text-[24px] leading-none">
+                  <div className="flex items-baseline gap-1.5 lg:gap-4 mt-0.5 lg:mt-3">
+                    <p className="text-green-600 font-extrabold text-[14px] lg:text-[32px] leading-none">
                       ¥{Number(product.price).toLocaleString()}
                     </p>
                     
                     {product.stock > 0 && product.stock <= 5 && (
-                      <span className="text-[8px] lg:text-[14px] font-bold text-orange-500 bg-orange-50 px-1 py-0.5 lg:px-2 lg:py-1 rounded-sm">
+                      <span className="text-[8px] lg:text-[18px] font-bold text-orange-500 bg-orange-50 px-1 py-0.5 lg:px-2.5 lg:py-1 rounded-sm">
                         残り{product.stock}
                       </span>
                     )}
