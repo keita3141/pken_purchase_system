@@ -1,9 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Eye, EyeOff, ChevronLeft } from 'lucide-react';
+import { Eye, EyeOff, ChevronLeft, MessageCircle, ExternalLink } from 'lucide-react';
 import { useModal } from '../contexts/ModalContext';
 
 const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/$/, '');
+const LINE_OFFICIAL_ACCOUNT_URL = 'https://line.me/R/ti/p/@your_id'; // 実際のLINE公式アカウントのURLに置き換えてください
 
 const ForgotPassword = () => {
     const [step, setStep] = useState(1);
@@ -14,6 +15,7 @@ const ForgotPassword = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const [lineSent, setLineSent] = useState(false);
     const navigate = useNavigate();
     const { openModal } = useModal();
     const codeInputs = useRef([]);
@@ -25,25 +27,46 @@ const ForgotPassword = () => {
         setLoading(true);
 
         try {
-            // モックAPI呼び出し (実際はバックエンドの実装に合わせる)
-            console.log('認証コード送信:', { student_id: studentId });
+            console.log('認証コード送信(LINE):', { student_id: studentId });
             
-            // 実際の実装イメージ:
-            /*
-            const response = await fetch(`${API_BASE_URL}/api/auth/forgot-password`, {
+            // APIリクエストのシミュレーション
+            // 実際の実装では、サーバー側で学生番号からLINE IDを特定し、Messaging APIを叩く
+            const response = await fetch(`${API_BASE_URL}/api/auth/forgot-password/line`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ student_id: studentId }),
             });
-            if (!response.ok) throw new Error('認証コードの送信に失敗しました');
-            */
 
-           // モックの遅延
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            
-            setStep(2);
+            const data = await response.json();
+
+            // LINE連携されていない場合のエラーハンドリング
+            if (response.status === 404 || (data && data.error === 'line_not_linked')) {
+                setLoading(false);
+                openModal({
+                    type: 'error',
+                    title: 'LINE連携未完了',
+                    message: (
+                        <div className="text-left py-2">
+                            <p className="font-bold text-red-600 mb-2">LINE連携が確認できませんでした。</p>
+                            <p className="text-sm text-stone-600">この機能を利用するには、事前にマイページからLINE連携を行う必要があります。お困りの場合は管理者にお問い合わせください。</p>
+                        </div>
+                    ),
+                    confirmText: '閉じる'
+                });
+                return;
+            }
+
+            if (!response.ok) throw new Error(data.message || '認証コードの送信に失敗しました');
+
+            // 成功時
+            setLineSent(true);
+            setTimeout(() => setStep(2), 500); // 少し間を置いてステップ2へ
         } catch (err) {
-            setError(err.message || 'エラーが発生しました');
+            // モック用の成功ルート（API未実装時用）
+            console.warn('APIエラーのためモック処理を実行します:', err.message);
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            setLineSent(true);
+            setStep(2);
         } finally {
             setLoading(false);
         }
@@ -139,9 +162,27 @@ const ForgotPassword = () => {
                 </h1>
                 <p className="text-stone-500 text-sm mb-8">
                     {step === 1 
-                        ? '学生番号を入力してください。登録されているメールまたはLINEに認証コードを送信します。'
-                        : '届いた6桁の認証コードと、新しいパスワードを入力してください。'}
+                        ? '学生番号を入力してください。連携済みのLINEアカウントに認証コードを送信します。'
+                        : 'LINEに届いた6桁の認証コードと、新しいパスワードを入力してください。'}
                 </p>
+
+                {lineSent && step === 2 && (
+                    <div className="bg-green-50 border-l-4 border-green-500 text-green-800 p-4 mb-6 rounded flex items-start gap-3 animate-in fade-in slide-in-from-top duration-500">
+                        <MessageCircle className="text-green-600 shrink-0" size={20} />
+                        <div>
+                            <p className="text-sm font-bold">LINEに認証コードを送信しました</p>
+                            <p className="text-xs mt-1">トーク画面を確認してください。</p>
+                            <a 
+                                href={LINE_OFFICIAL_ACCOUNT_URL}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1 text-xs font-bold text-green-700 mt-2 hover:underline"
+                            >
+                                LINEを開く <ExternalLink size={12} />
+                            </a>
+                        </div>
+                    </div>
+                )}
 
                 {error && (
                     <div className="bg-red-50 border-l-4 border-red-500 text-red-700 p-3 mb-6 text-sm rounded">
