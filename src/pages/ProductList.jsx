@@ -231,10 +231,10 @@ const ProductList = () => {
                 <Link
                   to={`/products/${product.id}`}
                   key={product.id}
-                  className="block bg-white rounded-sm shadow-sm border border-gray-100 overflow-hidden active:scale-[0.98] transition-transform"
+                  className="block bg-white rounded-sm shadow-sm border border-gray-100 overflow-hidden active:scale-[0.98] transition-transform aspect-square relative"
                 >
-                {/* 商品画像（正方形） */}
-                <div className="w-full aspect-square relative overflow-hidden bg-gray-50">
+                {/* 商品画像（高さを削ってカード全体を正方形に近づける） */}
+                <div className="w-full h-[65%] relative overflow-hidden bg-gray-50">
                   <img
                     src={imageSrc}
                     alt={product.name}
@@ -282,35 +282,31 @@ const ProductList = () => {
                   )}
                 </div>
 
-                {/* 商品情報 */}
-                <div className="p-3 pt-2">
+                {/* 商品情報（画像の下に密着） */}
+                <div className="p-2 pt-1 h-[35%] flex flex-col justify-center">
                   {/* カテゴリ（任意） */}
-                  <div className="flex items-center gap-1 mb-0.5">
-                    <span className="text-[9px] text-gray-400 font-medium truncate uppercase tracking-tighter">
+                  <div className="flex items-center gap-1">
+                    <span className="text-[8px] text-gray-400 font-medium truncate uppercase tracking-tighter">
                       {product.category_name}
                     </span>
                   </div>
 
                   {/* 商品名 */}
-                  <h3 className="text-sm font-bold text-gray-800 line-clamp-1 leading-tight">
+                  <h3 className="text-[11px] font-bold text-gray-800 line-clamp-1 leading-tight">
                     {product.name}
                   </h3>
 
                   {/* 価格と在庫ステータス（横並び） */}
-                  <div className="flex items-baseline gap-2 mt-1">
-                    <p className="text-green-600 font-extrabold text-lg leading-none">
+                  <div className="flex items-baseline gap-1 mt-0.5">
+                    <p className="text-green-600 font-extrabold text-sm leading-none">
                       ¥{Number(product.price).toLocaleString()}
                     </p>
                     
-                    {product.stock === 0 ? (
-                      <span className="text-[10px] font-bold text-red-500 bg-red-50 px-1.5 py-0.5 rounded-sm">
-                        売り切れ
+                    {product.stock > 0 && product.stock <= 5 && (
+                      <span className="text-[8px] font-bold text-orange-500 bg-orange-50 px-1 py-0.5 rounded-sm">
+                        残り{product.stock}
                       </span>
-                    ) : product.stock <= 5 ? (
-                      <span className="text-[10px] font-bold text-orange-500 bg-orange-50 px-1.5 py-0.5 rounded-sm">
-                        残り{product.stock}点
-                      </span>
-                    ) : null}
+                    )}
                   </div>
                 </div>
                 </Link>
