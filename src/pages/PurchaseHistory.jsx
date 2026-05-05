@@ -4,18 +4,6 @@ import { useAuth } from '../contexts/AuthContext';
 
 const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/$/, '');
 
-const PLACEHOLDER_IMAGE = '/no-image.png';
-
-const toAbsoluteUrl = (url) => {
-  if (!url || typeof url !== 'string') return PLACEHOLDER_IMAGE;
-
-  const normalizedUrl = url.trim();
-  if (!normalizedUrl) return PLACEHOLDER_IMAGE;
-  if (/^https?:\/\//i.test(normalizedUrl)) return normalizedUrl;
-
-  return `${API_BASE_URL}${normalizedUrl.startsWith('/') ? '' : '/'}${normalizedUrl}`;
-};
-
 const PurchaseHistory = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -183,9 +171,8 @@ const PurchaseHistory = () => {
                       const productPrice = product.price || detail.price || 0;
                       const quantity = detail.quantity || 1;
                       
-                      // 利用可能な画像URLを取得（複数のプロパティ名をチェック）
-                      const rawImageUrl = product.thumbnail_url || product.image_url || product.image_original_url;
-                      const imageUrl = toAbsoluteUrl(rawImageUrl);
+                      // 利用可能な画像URLを取得
+                      const productImage = product.image_url || '';
 
                       return (
                         <div key={detail.id || index} className="flex gap-4 py-3 items-center">
@@ -194,16 +181,11 @@ const PurchaseHistory = () => {
                             to={`/products/${product.id}`}
                             className="w-16 h-16 md:w-20 md:h-20 bg-stone-100 rounded-lg overflow-hidden flex-shrink-0 flex items-center justify-center hover:opacity-80 transition-opacity"
                           >
-                            <img 
-                              src={imageUrl} 
-                              alt={productName} 
-                              className="w-full h-full object-contain"
-                              onError={(e) => {
-                                if (e.currentTarget.src !== window.location.origin + PLACEHOLDER_IMAGE) {
-                                  e.currentTarget.src = PLACEHOLDER_IMAGE;
-                                }
-                              }}
-                            />
+                            {productImage ? (
+                              <img src={productImage} alt={productName} className="w-full h-full object-contain" />
+                            ) : (
+                              <div className="text-[10px] text-stone-400">No Image</div>
+                            )}
                           </Link>
 
                           <div className="flex-1 min-w-0">
