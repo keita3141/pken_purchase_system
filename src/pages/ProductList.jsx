@@ -180,7 +180,7 @@ const ProductList = () => {
   }
 
   return (
-    <div style={{ backgroundColor: '#faf3e8', minHeight: '100vh', paddingTop: '56px' }}>
+    <div style={{ backgroundColor: '#faf3e8', minHeight: '100vh', paddingTop: '0px' }}>
 
       {/* ─── カテゴリチップスバー ─── */}
       <CategoryChips
