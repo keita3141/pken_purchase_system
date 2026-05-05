@@ -451,9 +451,9 @@ const ProductDetail = () => {
           <div className="bg-white sm:rounded-3xl sm:shadow-sm overflow-hidden sm:border sm:border-stone-100">
             <div className="flex flex-col lg:flex-row gap-5 md:gap-8 lg:gap-12 xl:gap-16 sm:p-6 md:p-10 lg:p-12 xl:p-16">
               {/* Image Section - 左側（PC時） */}
-              <div className="w-full md:w-1/2 flex-shrink-0">
-                <div className="relative bg-stone-50 md:bg-gradient-to-br md:from-stone-100 md:to-stone-200 sm:rounded-lg overflow-hidden aspect-square sm:aspect-[4/3] min-h-[300px] flex items-center justify-center">
-                  <div className="w-full h-full flex items-center justify-center md:p-4 transition-opacity duration-300">
+              <div className="w-full md:w-1/2 flex-shrink-0 px-6 sm:px-0">
+                <div className="relative bg-stone-50 md:bg-gradient-to-br md:from-stone-100 md:to-stone-200 sm:rounded-lg overflow-hidden aspect-square sm:aspect-[4/3] max-h-[400px] flex items-center justify-center mx-auto">
+                  <div className="w-full h-full flex items-center justify-center p-4 transition-opacity duration-300">
                     {allImages.length > 0 ? (
                       <img 
                         key={allImages[currentImageIndex]}
@@ -547,7 +547,7 @@ const ProductDetail = () => {
                 )}
                 
                 {/* 商品名とラベル */}
-                <div className="mb-6">
+                <div className="mb-4">
                   <div className="flex flex-wrap items-center gap-4 mb-3">
                     <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-stone-900 leading-tight">
                       {String(product.name)}
@@ -560,6 +560,16 @@ const ProductDetail = () => {
                   </div>
                 </div>
 
+                {/* 価格表示 (商品説明より先に表示、スマホ版は右寄せ・背景なし) */}
+                <div className="mb-6 flex justify-end md:justify-start">
+                  <div className="flex items-baseline gap-1 md:gap-3 bg-transparent md:bg-gradient-to-br md:from-green-50 md:via-emerald-50 md:to-teal-50 md:p-6 md:rounded-2xl md:border-2 md:border-mos-green md:shadow-md">
+                    <span className="text-4xl sm:text-5xl md:text-6xl font-black text-mos-green">
+                      ¥{product.price ? product.price.toLocaleString() : '-'}
+                    </span>
+                    <span className="text-base sm:text-lg md:text-xl text-stone-600 font-semibold text-[12px] md:text-xl">税込</span>
+                  </div>
+                </div>
+
                 {/* 商品説明 */}
                 {descriptionText && (
                   <div className="mb-8">
@@ -569,18 +579,9 @@ const ProductDetail = () => {
                   </div>
                 )}
 
-                {/* 価格表示 - 独立した区画 */}
-                <div className="mb-6 md:mb-8 px-4 py-4 md:px-6 md:py-6 bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 rounded-2xl border md:border-2 border-mos-green shadow-sm md:shadow-md">
-                  <div className="flex items-baseline gap-1 md:gap-3 mb-1">
-                    <span className="text-4xl sm:text-5xl md:text-6xl font-black text-mos-green">
-                      ¥{product.price ? product.price.toLocaleString() : '-'}
-                    </span>
-                    <span className="text-base sm:text-lg md:text-xl text-stone-600 font-semibold">税込</span>
-                  </div>
-                </div>
-
                 {/* 在庫情報 - 数量選択の上に配置 */}
-                <div className="mb-6 md:mb-8 px-4 py-3 md:px-5 md:py-4 bg-blue-50 rounded-xl border border-blue-200 md:border-2">
+                {/* PC版のみ表示 */}
+                <div className="hidden md:block mb-6 md:mb-8 px-4 py-3 md:px-5 md:py-4 bg-blue-50 rounded-xl border border-blue-200 md:border-2">
                   <p className={`text-base md:text-xl font-bold ${getStockColor()}`}>
                     {product.stock !== undefined && product.stock !== null ? (
                       <>
@@ -597,7 +598,19 @@ const ProductDetail = () => {
 
                 {/* 数量選択 */}
                 <div className="mb-6 md:mb-8">
-                  <label className="block text-base md:text-lg font-bold text-stone-900 mb-3 md:mb-4">数量を選択</label>
+                  <div className="flex items-center justify-between mb-3">
+                    <label className="block text-base md:text-lg font-bold text-stone-900">数量を選択</label>
+                    {/* スマホ版在庫表示 - カードなし */}
+                    <div className="md:hidden">
+                      <p className={`text-sm font-bold ${getStockColor()}`}>
+                        {product.stock !== undefined && product.stock !== null ? (
+                          <>在庫: {product.stock}個</>
+                        ) : (
+                          '在庫数不明'
+                        )}
+                      </p>
+                    </div>
+                  </div>
                   <div className="flex items-center gap-3 md:gap-4 bg-stone-50 p-3 md:p-5 rounded-xl">
                     <button
                       onClick={() => setQuantity(Math.max(1, quantity - 1))}
