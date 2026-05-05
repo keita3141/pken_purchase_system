@@ -70,21 +70,15 @@ const Header = () => {
                 )}
               </Link>
 
-              {/* 3. 通知アイコン */}
-              <button
+              {/* 3. ニュースアイコン */}
+              <Link
+                to="/news"
+                aria-label="ニュース画面へ"
                 className="relative flex items-center justify-center text-white active:bg-green-700 rounded-full"
                 style={{ width: '40px', height: '40px' }}
-                aria-label="通知"
               >
-                <span className="material-icons" style={{ fontSize: '22px' }}>notifications</span>
-                {/* 通知バッジ（必要に応じて表示） */}
-                {/* <span
-                  className="absolute flex items-center justify-center bg-red-500 text-white font-bold rounded-full"
-                  style={{ top: '4px', right: '4px', minWidth: '16px', height: '16px', fontSize: '9px', padding: '0 3px' }}
-                >
-                  1
-                </span> */}
-              </button>
+                <span className="material-icons" style={{ fontSize: '22px' }}>newspaper</span>
+              </Link>
 
               {/* 4. メニューボタン */}
               <button
