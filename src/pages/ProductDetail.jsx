@@ -452,8 +452,8 @@ const ProductDetail = () => {
             <div className="flex flex-col lg:flex-row gap-5 md:gap-8 lg:gap-12 xl:gap-16 sm:p-6 md:p-10 lg:p-12 xl:p-16">
               {/* Image Section - 左側（PC時） */}
               <div className="w-full md:w-1/2 flex-shrink-0 px-6 sm:px-0">
-                <div className="relative bg-stone-50 md:bg-gradient-to-br md:from-stone-100 md:to-stone-200 sm:rounded-lg overflow-hidden aspect-square sm:aspect-[4/3] max-h-[400px] flex items-center justify-center mx-auto">
-                  <div className="w-full h-full flex items-center justify-center p-4 transition-opacity duration-300">
+                <div className="relative bg-stone-50 md:bg-stone-100 sm:rounded-lg overflow-hidden aspect-square sm:aspect-auto sm:h-[350px] md:h-[400px] flex items-center justify-center mx-auto">
+                  <div className="w-full h-full flex items-center justify-center p-2 transition-opacity duration-300">
                     {allImages.length > 0 ? (
                       <img 
                         key={allImages[currentImageIndex]}
