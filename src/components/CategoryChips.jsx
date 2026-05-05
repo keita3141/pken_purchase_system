@@ -77,5 +77,3 @@ const CategoryChips = ({
 };
 
 export default CategoryChips;
-
-export default CategoryChips;
