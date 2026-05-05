@@ -579,38 +579,9 @@ const ProductDetail = () => {
                   </div>
                 )}
 
-                {/* 在庫情報 - 数量選択の上に配置 */}
-                {/* PC版のみ表示 */}
-                <div className="hidden md:block mb-6 md:mb-8 px-4 py-3 md:px-5 md:py-4 bg-blue-50 rounded-xl border border-blue-200 md:border-2">
-                  <p className={`text-base md:text-xl font-bold ${getStockColor()}`}>
-                    {product.stock !== undefined && product.stock !== null ? (
-                      <>
-                        残り <span className="text-xl md:text-3xl">{product.stock}</span> 個
-                        {product.stock <= 5 && product.stock > 0 && (
-                          <span className="ml-2 text-xs md:text-sm text-red-600 font-bold">（在庫わずか）</span>
-                        )}
-                      </>
-                    ) : (
-                      '在庫数は不明です'
-                    )}
-                  </p>
-                </div>
-
                 {/* 数量選択 */}
                 <div className="mb-6 md:mb-8">
-                  <div className="flex items-center justify-between mb-3">
-                    <label className="block text-base md:text-lg font-bold text-stone-900">数量を選択</label>
-                    {/* スマホ版在庫表示 - カードなし */}
-                    <div className="md:hidden">
-                      <p className={`text-sm font-bold ${getStockColor()}`}>
-                        {product.stock !== undefined && product.stock !== null ? (
-                          <>在庫: {product.stock}個</>
-                        ) : (
-                          '在庫数不明'
-                        )}
-                      </p>
-                    </div>
-                  </div>
+                  <label className="block text-base md:text-lg font-bold text-stone-900 mb-3 md:mb-4">数量を選択</label>
                   <div className="flex items-center gap-3 md:gap-4 bg-stone-50 p-3 md:p-5 rounded-xl">
                     <button
                       onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -618,7 +589,7 @@ const ProductDetail = () => {
                     >
                       −
                     </button>
-                    <span className="text-3xl md:text-5xl font-bold text-stone-900 min-w-[4rem] md:min-w-[5rem] text-center">
+                    <span className="text-3xl md:text-5xl font-bold text-stone-900 min-w-[3rem] md:min-w-[5rem] text-center">
                       {quantity}
                     </span>
                     <button
@@ -628,6 +599,21 @@ const ProductDetail = () => {
                     >
                       ＋
                     </button>
+
+                    {/* 在庫表示を数量選択の右側に配置 */}
+                    <div className="ml-auto pr-2 md:pr-4">
+                      <p className={`text-base md:text-xl font-bold ${getStockColor()}`}>
+                        {product.stock !== undefined && product.stock !== null ? (
+                          <>
+                            <span className="text-xs md:text-sm text-stone-500 block md:inline md:mr-1">在庫</span>
+                            <span className="text-xl md:text-3xl">{product.stock}</span>
+                            <span className="text-xs md:text-sm ml-0.5">個</span>
+                          </>
+                        ) : (
+                          <span className="text-xs md:text-sm text-stone-400">個数不明</span>
+                        )}
+                      </p>
+                    </div>
                   </div>
                 </div>
 
