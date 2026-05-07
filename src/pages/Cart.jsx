@@ -435,6 +435,7 @@ const Cart = () => {
             {/* Cart Items */}
             <div className="space-y-2">
               {cartItems.map((item, index) => {
+                console.log("カートアイテムの中身 (map中):", item);
                 const product = item.product || item;
                 const productName = product.name || 'Unknown Product';
                 const productPrice = product.price || 0;
